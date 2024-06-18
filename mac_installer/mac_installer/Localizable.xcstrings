@@ -1,0 +1,264 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+
+    },
+    "BACK" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Back"
+          }
+        }
+      }
+    },
+    "BRIEF_OVERVIEW" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "<product> will be installed on your system for all users."
+          }
+        }
+      }
+    },
+    "CLEAN_UP_FILES" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clean up temporary files"
+          }
+        }
+      }
+    },
+    "CONTINUE" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue"
+          }
+        }
+      }
+    },
+    "COPY_NEW_SERVICE" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy files to destination"
+          }
+        }
+      }
+    },
+    "DESCRIPTION" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A description of what <product> does"
+          }
+        }
+      }
+    },
+    "DONE" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done"
+          }
+        }
+      }
+    },
+    "INSTALL_FAILED" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The installation failed. No changes have been made."
+          }
+        }
+      }
+    },
+    "INSTALL_ROLLBACK" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The installation failed. The version previously installed has been restored."
+          }
+        }
+      }
+    },
+    "INSTALL_SUCCEEDED" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The software has been installed and is ready to use."
+          }
+        }
+      }
+    },
+    "INSTALLATION" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Installlation"
+          }
+        }
+      }
+    },
+    "INSTALLER_TITLE" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The name of the product being installed"
+          }
+        }
+      }
+    },
+    "INTRODUCTION" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Introduction"
+          }
+        }
+      }
+    },
+    "LICENSE" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "License"
+          }
+        }
+      }
+    },
+    "LICENSE_DECLINED" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You must accept the license in order to install the software."
+          }
+        }
+      }
+    },
+    "LICENSE_TEXT" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The end-user license text."
+          }
+        }
+      }
+    },
+    "PRINT" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Print..."
+          }
+        }
+      }
+    },
+    "REQUEST_PERMISSIONS" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Request permissions for helper app"
+          }
+        }
+      }
+    },
+    "RESTORE_SERVICE" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restore previous installation"
+          }
+        }
+      }
+    },
+    "SAVE" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save..."
+          }
+        }
+      }
+    },
+    "START_SERVICE" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start the service"
+          }
+        }
+      }
+    },
+    "STOP_SERVICE" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stop the service"
+          }
+        }
+      }
+    },
+    "SUMMARY" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Summary"
+          }
+        }
+      }
+    },
+    "SUMMARY_ROLLBACK" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A problem occurred during installation. The previous installation has been restored."
+          }
+        }
+      }
+    },
+    "SUMMARY_SUCCESS" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The product was installed successfully."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
