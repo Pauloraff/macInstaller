@@ -6,10 +6,12 @@
 //
 
 import SwiftUI
+import WebKit
 
 enum InstallerStep: Int, CaseIterable {
     case introduction
     case license
+    case awaitingLicenseAcceptance
     case installation
     case summary
     
@@ -18,7 +20,9 @@ enum InstallerStep: Int, CaseIterable {
             case .introduction:
                 return "INTRODUCTION"
             case .license:
-                return "LICENSE"
+                return "READ_LICENSE"
+            case .awaitingLicenseAcceptance:
+                return "ACCEPT_LICENSE"
             case .installation:
                 return "INSTALLATION"
             case .summary:
@@ -65,9 +69,6 @@ struct InstallerStepView: View {
 }
 
 enum InstallerTask: String {
-    case requestAdminCredentials = "REQUEST_PERMISSIONS"   // if this fails, the install fails;
-    // if it succeeds, the helper app is installed and launched with admin
-    // permissions.
     case stopService = "STOP_SERVICE"               // detect whether the daemon is running (update install) or not (fresh install) and stop it if it is running.
     // stopService == 'sudo launctl unload <service identifier>
     case copyCurrentInstallation = "COPY_NEW_SERVICE"   // saves a copy of any files changed by the installation,
@@ -84,7 +85,7 @@ enum InstallerTask: String {
     }
 }
 
-struct InstallerState {
+@Observable class InstallerState {
     var step: InstallerStep = .introduction
     var licenseAccepted = false // user must accept the license
     var freshInstall = true // If we detect a previous installation, set to false
@@ -92,7 +93,7 @@ struct InstallerState {
     var successful = false // This is set to true before the installation tasks are run
     var summaryMessage = ""
     
-    mutating func gotoSummary() {
+    func gotoSummary() {
         if !licenseAccepted {
             summaryMessage = String(localized:"LICENSE_DECLINED") // user rejected license
         } else if successful {
@@ -105,7 +106,7 @@ struct InstallerState {
         step = .summary
     }
     
-    mutating func gotoNext() {
+    func gotoNext() {
         // test preconditions
         // -> license: always succeeds
         // -> Installation: user must accept license before continuing
@@ -118,16 +119,26 @@ struct InstallerState {
             NSApp.terminate(nil)
         }
     }
-    mutating func gotoPrev() {
+
+    func gotoPrev() {
         if let prev = InstallerStep(rawValue:(step.rawValue - 1)) {
             step = prev
         }
     }
 }
 
+class WebViewData: ObservableObject {
+  @Published var loading: Bool = false
+  @Published var url: URL?;
+
+  init (url: URL) {
+    self.url = url
+  }
+}
+
 
 struct ContentView: View {
-    @State private var model: InstallerState = InstallerState()
+    @State var model: InstallerState = InstallerState()
 
     func continueButtonClicked() {
         model.gotoNext()
@@ -143,6 +154,15 @@ struct ContentView: View {
     
     func saveButtonClicked() {
         // Save the license to a file
+    }
+    
+    func bundleURL(fileName: String, fileExtension: String) -> URL {
+        if let fileURL = Bundle.main.url(forResource: fileName, withExtension: fileExtension, subdirectory: "www") {
+            return fileURL
+        } else {
+            print("File not found")
+            return URL(string: "")!
+        }
     }
     
     var body: some View {
@@ -179,15 +199,19 @@ struct ContentView: View {
                 if (model.step == .license) {
                     // Text view
                     VStack(alignment: .leading) {
-                        Text("LICENSE_TEXT").multilineTextAlignment(.center)
+                        LicenseHTMLView()
                         Spacer()
                     }
                 }
+                
+                if (model.step == .awaitingLicenseAcceptance) {
+                        AcceptanceView().environment(model)
+                }
+
                 if (model.step == .installation) {
                     // List of actions to undertake
                     // These all require that the helper service have been given permissions
                     VStack(alignment: .leading) {
-                        Text("REQUEST_PERMISSIONS").multilineTextAlignment(.center)
                         Text("STOP_SERVICE").multilineTextAlignment(.center)
                         Text("COPY_NEW_SERVICE").multilineTextAlignment(.center)
                         Text("START_SERVICE").multilineTextAlignment(.center)
@@ -204,16 +228,20 @@ struct ContentView: View {
                     })
                 }
                 if (model.step == .summary) {
-                    // List of actions to undertake
+                    // failed to install:
+                    // was it because the license was rejected?
+                    
                     VStack(alignment: .leading) {
                         if (model.successful) {
                             Text("SUMMARY_SUCCESS")
-                        } else {
+                        } else if (model.licenseAccepted) {
                             if (model.freshInstall) {
                                 Text("SUMMARY_SUCCESS")
                             } else {
                                 Text("SUMMARY_ROLLBACK")
                             }
+                        } else {
+                            Text("LICENSE_DECLINED")
                         }
                         Spacer()
                     }
@@ -232,6 +260,7 @@ struct ContentView: View {
                 Spacer()
                 if (model.step != .summary && 
                     model.step != .installation &&
+                    model.step != .awaitingLicenseAcceptance &&
                     model.step != .introduction) {
                     Button(action: backButtonClicked) {
                         Text("BACK").disabled(model.step == .introduction)
@@ -240,13 +269,36 @@ struct ContentView: View {
                 
                 Button(action: continueButtonClicked) {
                     Text(model.step == .summary ? "DONE" : "CONTINUE")
-                }.disabled(model.step == .installation)
+                }.disabled(model.step == .installation || model.step == .awaitingLicenseAcceptance)
             }
         }
         .padding()
         .onAppear(perform: {
             // perform startup initialization
         })
+    }
+}
+
+struct AcceptanceView: View {
+    @Environment(InstallerState.self) private var model
+    
+    var body: some View {
+        VStack {
+            Text("ACCEPT_TEXT")
+            Spacer()
+            HStack {
+                Button("REJECT") {
+                    model.successful = false
+                    model.licenseAccepted = false
+                    model.step = .summary
+                }
+                Button("ACCEPT") {
+                    model.licenseAccepted = true
+                    model.step = .installation
+                }
+            }
+
+        }
     }
 }
 

@@ -6,9 +6,9 @@
 //
 
 import XCTest
-@testable import mac_installer
+@testable import macInstaller
 
-final class mac_installerTests: XCTestCase {
+final class macInstallerTests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.

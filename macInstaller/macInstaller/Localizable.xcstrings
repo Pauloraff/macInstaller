@@ -4,6 +4,37 @@
     "" : {
 
     },
+    "ACCEPT" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accept"
+          }
+        }
+      }
+    },
+    "ACCEPT_LICENSE" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accept License"
+          }
+        }
+      }
+    },
+    "ACCEPT_TEXT" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "By clicking 'Accept', you agree to the terms of the license."
+          }
+        }
+      }
+    },
     "BACK" : {
       "localizations" : {
         "en" : {
@@ -152,17 +183,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "You must accept the license in order to install the software."
-          }
-        }
-      }
-    },
-    "LICENSE_TEXT" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The end-user license text."
+            "value" : "You must accept the license in order to install the software. Nothing was installed."
           }
         }
       }
@@ -177,13 +198,23 @@
         }
       }
     },
-    "REQUEST_PERMISSIONS" : {
+    "READ_LICENSE" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Request permissions for helper app"
+            "value" : "Read license"
+          }
+        }
+      }
+    },
+    "REJECT" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reject"
           }
         }
       }

@@ -20,21 +20,6 @@ struct mac_installerApp: App {
     
     func viewDidLoad() {
         print("viewDidLoad")
-        
-// Milestone 2: request admin permissions for helper service
-//        super.viewDidLoad()
-//        
-//        guard let auth = Util.askAuthorization() else {
-//            NSApp.terminate(nil)
-//            fatalError("Authorization not acquired.")
-//        }
-//        
-//        if !Util.blessHelper(label: Constant.helperMachLabel, authorization: auth) {
-//            NSApp.terminate(nil)
-//            fatalError("User did not grant permissions to helper app")
-//        }
-//        
-//        client.start()
     }
 
 }

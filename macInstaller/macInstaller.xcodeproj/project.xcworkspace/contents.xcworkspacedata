@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:">
+      location = "self:/Users/paulo/Projects/Mine/macInstaller/macInstaller/macInstaller.xcodeproj">
    </FileRef>
 </Workspace>
