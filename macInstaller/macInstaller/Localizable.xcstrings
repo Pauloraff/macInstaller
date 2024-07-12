@@ -183,7 +183,17 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "You must accept the license in order to install the software. Nothing was installed."
+            "value" : "You must accept the license in order to install the software.\nNothing was installed."
+          }
+        }
+      }
+    },
+    "PERMISSIONS_DECLINED" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You must enter an admin's password in order to grant admin permissions to the helper tool.\nThis is needed to install the software."
           }
         }
       }

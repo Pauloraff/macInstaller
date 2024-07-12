@@ -138,6 +138,7 @@ class WebViewData: ObservableObject {
 
 
 struct ContentView: View {
+    var client = XPCClient()
     @State var model: InstallerState = InstallerState()
 
     func continueButtonClicked() {
@@ -234,6 +235,8 @@ struct ContentView: View {
                     VStack(alignment: .leading) {
                         if (model.successful) {
                             Text("SUMMARY_SUCCESS")
+                        } else if (!model.permissionsGranted) {
+                            Text("PERMISSIONS_DECLINED")
                         } else if (model.licenseAccepted) {
                             if (model.freshInstall) {
                                 Text("SUMMARY_SUCCESS")
@@ -275,6 +278,17 @@ struct ContentView: View {
         .padding()
         .onAppear(perform: {
             // perform startup initialization
+            guard let auth = Util.askAuthorization() else {
+                fatalError("Authorization not acquired.")
+            }
+            
+            if (!Util.blessHelper(label: Constant.helperMachLabel, authorization: auth)) {
+                // we go immediately to the summary screen, and the only option is to exit.
+                model.gotoSummary()
+            } else {
+                model.permissionsGranted = true
+                client.start()
+            }
         })
     }
 }
