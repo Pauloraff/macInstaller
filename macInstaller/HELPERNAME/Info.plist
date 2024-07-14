@@ -3,12 +3,12 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleIdentifier</key>
-	<string>com.greenkitty.macinstallerhelper</string>
+	<string>HELPERNAME</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>SMAuthorizedClients</key>
 	<array>
-		<string>identifier &quot;com.greenkitty.macinstaller&quot; and anchor apple generic and certificate leaf[subject.CN] = &quot;Developer ID Application: Paulo Raffaelli (2XEVFK8ZST)&quot;</string>
+		<string>identifier &quot;CLIENTNAME&quot; and anchor apple generic and certificate leaf[subject.CN] = &quot;SIGNINGIDENT&quot;</string>
 	</array>
 </dict>
 </plist>

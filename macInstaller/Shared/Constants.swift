@@ -8,5 +8,5 @@
 import Foundation
 
 struct Constant {
-    static let helperMachLabel = "com.greenkitty.macinstallerhelper"
+    static let helperMachLabel = "HELPERNAME"
 }

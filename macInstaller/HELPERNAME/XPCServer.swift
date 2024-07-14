@@ -40,7 +40,7 @@ class XPCServer: NSObject {
         }
         // in this sample we duplicate the requirements from the Info.plist for simplicity
         // in a commercial application you could want to put the requirements in one place, for example in Active Compilation Conditions (Swift), or in preprocessor definitions (C, Objective-C)
-        let entitlements = "identifier \"com.greenkitty.macinstaller\" and anchor apple generic and certificate leaf[subject.CN] = \"Developer ID Application: Paulo Raffaelli (2XEVFK8ZST)\""
+        let entitlements = "identifier \"CLIENTNAME\" and anchor apple generic and certificate leaf[subject.CN] = \"SIGNINGCERT\""
         var requirement: SecRequirement?
         
         status = SecRequirementCreateWithString(entitlements as CFString, flags, &requirement)

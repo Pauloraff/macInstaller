@@ -3,10 +3,10 @@
 <plist version="1.0">
 <dict>
 	<key>Label</key>
-	<string>com.greenkitty.macinstallerhelper</string>
+	<string>HELPERNAME</string>
 	<key>MachServices</key>
 	<dict>
-		<key>com.greenkitty.macinstallerhelper</key>
+		<key>HELPERNAME</key>
 		<true/>
 	</dict>
 </dict>

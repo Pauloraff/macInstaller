@@ -2,12 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSHumanReadableCopyright</key>
-	<string></string>
 	<key>SMPrivilegedExecutables</key>
 	<dict>
-		<key>com.greenkitty.macinstallerhelper</key>
-		<string>identifier &quot;com.greenkitty.macinstallerhelper&quot; and anchor apple generic and certificate leaf[subject.CN] = &quot;Developer ID Application: Paulo Raffaelli (2XEVFK8ZST)&quot;</string>
+		<key>HELPERNAME</key>
+		<string>identifier &quot;CLIENTNAME&quot; and anchor apple generic and certificate leaf[subject.CN] = &quot;SIGNINGIDENT&quot;</string>
 	</dict>
 </dict>
 </plist>

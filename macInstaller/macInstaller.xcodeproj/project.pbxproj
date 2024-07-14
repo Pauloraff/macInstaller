@@ -17,7 +17,7 @@
 		3ABBF9682C3360FF00490E62 /* License.html in Resources */ = {isa = PBXBuildFile; fileRef = 3ABBF9672C3360FF00490E62 /* License.html */; };
 		3ABBF96C2C3364BD00490E62 /* HTMLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABBF96B2C3364BD00490E62 /* HTMLView.swift */; };
 		3AD257962C3AF69400AD6254 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD257952C3AF69400AD6254 /* main.swift */; };
-		3AD2579D2C3AF6EA00AD6254 /* com.greenkitty.macinstallerhelper in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3AD257932C3AF69400AD6254 /* com.greenkitty.macinstallerhelper */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3AD2579D2C3AF6EA00AD6254 /* HELPERNAME in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3AD257932C3AF69400AD6254 /* HELPERNAME */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3AD257A42C3AFD7100AD6254 /* XPCServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD257A32C3AFD7100AD6254 /* XPCServer.swift */; };
 		3AD257A62C3AFD7E00AD6254 /* Installer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD257A52C3AFD7E00AD6254 /* Installer.swift */; };
 		3AD257A92C3AFDC800AD6254 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD257A82C3AFDC800AD6254 /* Constants.swift */; };
@@ -69,13 +69,14 @@
 			dstPath = Contents/Library/LaunchServices;
 			dstSubfolderSpec = 1;
 			files = (
-				3AD2579D2C3AF6EA00AD6254 /* com.greenkitty.macinstallerhelper in CopyFiles */,
+				3AD2579D2C3AF6EA00AD6254 /* HELPERNAME in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3A3C604B2C447D960068CF65 /* AdjustProjectSettings.zsh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = AdjustProjectSettings.zsh; path = ../AdjustProjectSettings.zsh; sourceTree = "<group>"; };
 		3A46A0CF2C1B7F5100E9515A /* License screen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "License screen.png"; sourceTree = "<group>"; };
 		3A46A0D12C1B7F5900E9515A /* License modal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "License modal.png"; sourceTree = "<group>"; };
 		3A46A0D72C1B7F9100E9515A /* Final auth screen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Final auth screen.png"; sourceTree = "<group>"; };
@@ -96,7 +97,7 @@
 		3A7471BF2C1A3DF000E559FA /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		3ABBF9672C3360FF00490E62 /* License.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = License.html; sourceTree = SOURCE_ROOT; };
 		3ABBF96B2C3364BD00490E62 /* HTMLView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLView.swift; sourceTree = "<group>"; };
-		3AD257932C3AF69400AD6254 /* com.greenkitty.macinstallerhelper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = com.greenkitty.macinstallerhelper; sourceTree = BUILT_PRODUCTS_DIR; };
+		3AD257932C3AF69400AD6254 /* HELPERNAME */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = HELPERNAME; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AD257952C3AF69400AD6254 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		3AD2579E2C3AF7D600AD6254 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3AD257A22C3AFC9500AD6254 /* launchd.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = launchd.plist; sourceTree = "<group>"; };
@@ -105,7 +106,7 @@
 		3AD257A82C3AFDC800AD6254 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		3AD257AB2C3AFDE300AD6254 /* Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		3AD257AF2C3AFE6D00AD6254 /* NSXPCConnection+AuditToken.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSXPCConnection+AuditToken.h"; sourceTree = "<group>"; };
-		3AD257B02C3AFE7400AD6254 /* com.greenkitty.macInstallerHelper-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "com.greenkitty.macInstallerHelper-Bridging-Header.h"; sourceTree = "<group>"; };
+		3AD257B02C3AFE7400AD6254 /* HELPERNAME-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HELPERNAME-Bridging-Header.h"; sourceTree = "<group>"; };
 		3AD257B12C3AFF8E00AD6254 /* XPCClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XPCClient.swift; sourceTree = "<group>"; };
 		3AD257B32C3AFF9E00AD6254 /* Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		3AD257B52C3B024E00AD6254 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -160,12 +161,13 @@
 		3A7471872C1A3D6F00E559FA = {
 			isa = PBXGroup;
 			children = (
+				3A3C604B2C447D960068CF65 /* AdjustProjectSettings.zsh */,
 				3AD257A72C3AFD9A00AD6254 /* Shared */,
 				3A46A0CE2C1B7F4000E9515A /* Screenshots */,
 				3A7471BF2C1A3DF000E559FA /* LICENSE */,
 				3A7471BE2C1A3DF000E559FA /* README.md */,
 				3A7471922C1A3D6F00E559FA /* macInstaller */,
-				3AD257942C3AF69400AD6254 /* com.greenkitty.macinstallerhelper */,
+				3AD257942C3AF69400AD6254 /* HELPERNAME */,
 				3A7471A42C1A3D7000E559FA /* macInstallerTests */,
 				3A7471AE2C1A3D7000E559FA /* macInstallerUITests */,
 				3A7471912C1A3D6F00E559FA /* Products */,
@@ -178,7 +180,7 @@
 				3A7471902C1A3D6F00E559FA /* macInstaller.app */,
 				3A7471A12C1A3D7000E559FA /* macInstallerTests.xctest */,
 				3A7471AB2C1A3D7000E559FA /* macInstallerUITests.xctest */,
-				3AD257932C3AF69400AD6254 /* com.greenkitty.macinstallerhelper */,
+				3AD257932C3AF69400AD6254 /* HELPERNAME */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -225,10 +227,10 @@
 			path = macInstallerUITests;
 			sourceTree = "<group>";
 		};
-		3AD257942C3AF69400AD6254 /* com.greenkitty.macinstallerhelper */ = {
+		3AD257942C3AF69400AD6254 /* HELPERNAME */ = {
 			isa = PBXGroup;
 			children = (
-				3AD257B02C3AFE7400AD6254 /* com.greenkitty.macInstallerHelper-Bridging-Header.h */,
+				3AD257B02C3AFE7400AD6254 /* HELPERNAME-Bridging-Header.h */,
 				3AD257952C3AF69400AD6254 /* main.swift */,
 				3AD257A32C3AFD7100AD6254 /* XPCServer.swift */,
 				3AD257A52C3AFD7E00AD6254 /* Installer.swift */,
@@ -236,7 +238,7 @@
 				3AD2579E2C3AF7D600AD6254 /* Info.plist */,
 				3AD257A22C3AFC9500AD6254 /* launchd.plist */,
 			);
-			path = com.greenkitty.macinstallerhelper;
+			path = HELPERNAME;
 			sourceTree = "<group>";
 		};
 		3AD257A72C3AFD9A00AD6254 /* Shared */ = {
@@ -306,9 +308,9 @@
 			productReference = 3A7471AB2C1A3D7000E559FA /* macInstallerUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
-		3AD257922C3AF69400AD6254 /* com.greenkitty.macinstallerhelper */ = {
+		3AD257922C3AF69400AD6254 /* HELPERNAME */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3AD257992C3AF69400AD6254 /* Build configuration list for PBXNativeTarget "com.greenkitty.macinstallerhelper" */;
+			buildConfigurationList = 3AD257992C3AF69400AD6254 /* Build configuration list for PBXNativeTarget "HELPERNAME" */;
 			buildPhases = (
 				3AD2578F2C3AF69400AD6254 /* Sources */,
 				3AD257902C3AF69400AD6254 /* Frameworks */,
@@ -318,9 +320,9 @@
 			);
 			dependencies = (
 			);
-			name = com.greenkitty.macinstallerhelper;
+			name = HELPERNAME;
 			productName = InstallerHelper;
-			productReference = 3AD257932C3AF69400AD6254 /* com.greenkitty.macinstallerhelper */;
+			productReference = 3AD257932C3AF69400AD6254 /* HELPERNAME */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -365,7 +367,7 @@
 				3A74718F2C1A3D6F00E559FA /* macInstaller */,
 				3A7471A02C1A3D7000E559FA /* macInstallerTests */,
 				3A7471AA2C1A3D7000E559FA /* macInstallerUITests */,
-				3AD257922C3AF69400AD6254 /* com.greenkitty.macinstallerhelper */,
+				3AD257922C3AF69400AD6254 /* HELPERNAME */,
 			);
 		};
 /* End PBXProject section */
@@ -457,7 +459,7 @@
 		};
 		3AD2579B2C3AF69D00AD6254 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 3AD257922C3AF69400AD6254 /* com.greenkitty.macinstallerhelper */;
+			target = 3AD257922C3AF69400AD6254 /* HELPERNAME */;
 			targetProxy = 3AD2579A2C3AF69D00AD6254 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -588,15 +590,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Developer ID Application";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"macInstaller/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=macosx*]" = 2XEVFK8ZST;
+				DEVELOPMENT_TEAM = SIGNINGTEAM;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -608,7 +608,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.greenkitty.macinstaller;
+				PRODUCT_BUNDLE_IDENTIFIER = CLIENTNAME;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -621,15 +621,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Developer ID Application";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"macInstaller/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=macosx*]" = 2XEVFK8ZST;
+				DEVELOPMENT_TEAM = SIGNINGTEAM;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -641,7 +639,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.greenkitty.macinstaller;
+				PRODUCT_BUNDLE_IDENTIFIER = CLIENTNAME;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -658,11 +656,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = 2XEVFK8ZST;
+				DEVELOPMENT_TEAM = SIGNINGTEAM;
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 14.4;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.greenkitty.mac-installerTests";
+				PRODUCT_BUNDLE_IDENTIFIER = CLENTNAMETESTS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -679,11 +677,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = 2XEVFK8ZST;
+				DEVELOPMENT_TEAM = SIGNINGTEAM;
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 14.4;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.greenkitty.mac-installerTests";
+				PRODUCT_BUNDLE_IDENTIFIER = CLIENTNAMETESTS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -699,10 +697,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = 2XEVFK8ZST;
+				DEVELOPMENT_TEAM = SIGNINGTEAM;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.greenkitty.mac-installerUITests";
+				PRODUCT_BUNDLE_IDENTIFIER = CLIENTNAMEUITESTS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -718,10 +716,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = 2XEVFK8ZST;
+				DEVELOPMENT_TEAM = SIGNINGTEAM;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.greenkitty.mac-installerUITests";
+				PRODUCT_BUNDLE_IDENTIFIER = CLIENTNAMEUITESTS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -732,13 +730,11 @@
 		3AD257972C3AF69400AD6254 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Developer ID Application";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
 				CREATE_INFOPLIST_SECTION_IN_BINARY = YES;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=macosx*]" = 2XEVFK8ZST;
+				DEVELOPMENT_TEAM = SIGNINGTEAM;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/$(TARGET_NAME)/Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
@@ -748,10 +744,10 @@
 					__launchd_plist,
 					"$(SRCROOT)/$(TARGET_NAME)/launchd.plist",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.greenkitty.macinstallerhelper;
+				PRODUCT_BUNDLE_IDENTIFIER = HELPERNAME;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "com.greenkitty.macinstallerhelper/com.greenkitty.macinstallerhelper-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "HELPERNAME/HELPERNAME-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -759,13 +755,12 @@
 		3AD257982C3AF69400AD6254 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
 				CREATE_INFOPLIST_SECTION_IN_BINARY = YES;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=macosx*]" = 2XEVFK8ZST;
+				DEVELOPMENT_TEAM = SIGNINGTEAM;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/$(TARGET_NAME)/Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
@@ -775,10 +770,10 @@
 					__launchd_plist,
 					"$(SRCROOT)/$(TARGET_NAME)/launchd.plist",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.greenkitty.macinstallerhelper;
+				PRODUCT_BUNDLE_IDENTIFIER = HELPERNAME;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "com.greenkitty.macinstallerhelper/com.greenkitty.macinstallerhelper-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "HELPERNAME/HELPERNAME-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -822,7 +817,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3AD257992C3AF69400AD6254 /* Build configuration list for PBXNativeTarget "com.greenkitty.macinstallerhelper" */ = {
+		3AD257992C3AF69400AD6254 /* Build configuration list for PBXNativeTarget "HELPERNAME" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3AD257972C3AF69400AD6254 /* Debug */,
