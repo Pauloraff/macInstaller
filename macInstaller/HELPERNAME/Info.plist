@@ -8,7 +8,7 @@
 	<string>6.0</string>
 	<key>SMAuthorizedClients</key>
 	<array>
-		<string>identifier &quot;CLIENTNAME&quot; and anchor apple generic and certificate leaf[subject.CN] = &quot;SIGNINGIDENT&quot;</string>
+		<string>identifier "CLIENTNAME" and anchor apple generic and certificate leaf[subject.CN] = "SIGNINGIDENT"</string>
 	</array>
 </dict>
 </plist>
