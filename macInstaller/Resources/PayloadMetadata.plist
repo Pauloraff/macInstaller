@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Files</key>
+	<array>
+        <dict>
+            <key>OwnerGroup</key>
+            <string>root:wheel</string>
+            <key>Permissions</key>
+            <string>-r-x------</string>
+            <key>Directory</key>
+            <string>/Library/Application Support/HELPERNAME</string>
+            <key>Filename</key>
+            <string>HELPERNAME</string>
+        </dict>
+        <dict>
+            <key>OwnerGroup</key>
+            <string>root:wheel</string>
+            <key>Permissions</key>
+            <string>-rw-------</string>
+            <key>Directory</key>
+            <string>/Library/Preferences/HELPERNAME</string>
+            <key>Filename</key>
+            <string>HELPERNAME.plist</string>
+        </dict>
+	</array>
+</dict>
+</plist>

@@ -71,16 +71,43 @@ struct InstallerStepView: View {
 enum InstallerTask: String {
     case stopService = "STOP_SERVICE"               // detect whether the daemon is running (update install) or not (fresh install) and stop it if it is running.
     // stopService == 'sudo launctl unload <service identifier>
-    case copyCurrentInstallation = "COPY_NEW_SERVICE"   // saves a copy of any files changed by the installation,
+    case copyNewSerivce = "COPY_NEW_SERVICE"   // saves a copy of any files changed by the installation,
     // copies all required files to their destinations,
     // and if there is an error, undoes all the copies and leaves the file system
     // in the same state it was before copyCurrentInstallation ran.
     case startService = "START_SERVICE"              // start/restart the installed service.
-    case cleanupPreviousInstallation = "CLEAN_UP_FILES" // remove any files that were part of the previous installation, if any.
+    case cleanUpFiles = "CLEAN_UP_FILES" // remove any files that were part of the previous installation, if any.
+}
+
+enum InstallerTaskState {
+    case pending
+    case running
+    case completed
+    case failed
+    case skipped
+}
+
+// InstallerTaskView(task: stopService)
+// InstallerTaskView(task: copyNewSerivce)
+// InstallerTaskView(task: startService)
+// InstallerTaskView(task: cleanUpFiles)
+
+struct InstallerTaskView: View, Hashable {
+    let task: InstallerTask
+    var state: InstallerTaskState
+    
+    init(task: InstallerTask) {
+        self.task = task
+        self.state = .pending
+    }
+
+    mutating func begin() {
+        state = .running
+    }
 
     var body: some View {
         HStack {
-            Text(LocalizedStringKey(rawValue))
+            Text(LocalizedStringKey(task.rawValue))
         }
     }
 }
@@ -136,6 +163,10 @@ class WebViewData: ObservableObject {
   }
 }
 
+// InstallerTaskView(task: stopService)
+// InstallerTaskView(task: copyNewSerivce)
+// InstallerTaskView(task: startService)
+// InstallerTaskView(task: cleanUpFiles)
 
 struct ContentView: View {
     var client = XPCClient()
@@ -165,7 +196,24 @@ struct ContentView: View {
             return URL(string: "")!
         }
     }
+
+    let stages = [
+        InstallerTaskView(task: .stopService),
+        InstallerTaskView(task: .copyNewSerivce),
+        InstallerTaskView(task: .startService),
+        InstallerTaskView(task: .cleanUpFiles)
+    ]
     
+    func nextRunnableStage() -> InstallerTaskView? {
+        var found: InstallerTaskView?
+        for stage in stages {
+            if stage.state == .pending {
+              found = stage
+              break
+            }
+        }
+        return found
+    }
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             // Top section: Title
@@ -213,18 +261,41 @@ struct ContentView: View {
                     // List of actions to undertake
                     // These all require that the helper service have been given permissions
                     VStack(alignment: .leading) {
-                        Text("STOP_SERVICE").multilineTextAlignment(.center)
-                        Text("COPY_NEW_SERVICE").multilineTextAlignment(.center)
-                        Text("START_SERVICE").multilineTextAlignment(.center)
-                        Text("CLEAN_UP_FILES").multilineTextAlignment(.center)
-                        Text("RESTORE_SERVICE").multilineTextAlignment(.center).hidden()
+                        ForEach(stages, id: \.self) { stage in
+                            stage
+                        }
                         Spacer()
                     }.layoutPriority(1).onAppear(perform: {
-                        // fake install actions - delay five seconds, then fake a successful installation and transition to
-                        // the summary screen
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
-                            // Tell the model to go to the summary page.
-                            model.gotoSummary()
+                        // run the next task
+                        if var next = nextRunnableStage() {
+                            // we tell the client to perform a task
+                            switch next.task {
+                                case .stopService:
+                                    client.stopService() {
+                                        
+                                    }
+                                case .startService:
+                                    client.startService() {
+                                        
+                                    }
+                                case .copyNewService:
+                                    // We pass the path of the metadata file to the service
+                                    
+                                    client.copyNewService(fileMetadata) {
+                                        
+                                    }
+                                case .cleanupFiles:
+                                    client.cleanupFiles() {
+                                        
+                                    }
+                            }
+                            client.performAction(next.task)
+                            next.begin() // this also sets 'state' to running
+                        } else {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+                                // Tell the model to go to the summary page.
+                                model.gotoSummary()
+                            }
                         }
                     })
                 }

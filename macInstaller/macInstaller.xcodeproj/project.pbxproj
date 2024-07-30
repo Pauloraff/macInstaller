@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A5387202C58506F0012E298 /* PayloadMetadata.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3A53871F2C58506F0012E298 /* PayloadMetadata.plist */; };
 		3A7471942C1A3D6F00E559FA /* macInstallerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7471932C1A3D6F00E559FA /* macInstallerApp.swift */; };
 		3A7471962C1A3D6F00E559FA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7471952C1A3D6F00E559FA /* ContentView.swift */; };
 		3A7471982C1A3D7000E559FA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A7471972C1A3D7000E559FA /* Assets.xcassets */; };
@@ -83,6 +84,7 @@
 		3A46A0D82C1B7FAB00E9515A /* Install progress screen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Install progress screen.png"; sourceTree = "<group>"; };
 		3A46A0D92C1B7FBC00E9515A /* Installation summary screen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Installation summary screen.png"; sourceTree = "<group>"; };
 		3A46A0DA2C1B813E00E9515A /* Introduction screen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Introduction screen.png"; sourceTree = "<group>"; };
+		3A53871F2C58506F0012E298 /* PayloadMetadata.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = PayloadMetadata.plist; sourceTree = "<group>"; };
 		3A7471902C1A3D6F00E559FA /* macInstaller.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = macInstaller.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A7471932C1A3D6F00E559FA /* macInstallerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = macInstallerApp.swift; sourceTree = "<group>"; };
 		3A7471952C1A3D6F00E559FA /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -158,9 +160,18 @@
 			path = Screenshots;
 			sourceTree = "<group>";
 		};
+		3A53871E2C5850400012E298 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				3A53871F2C58506F0012E298 /* PayloadMetadata.plist */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		3A7471872C1A3D6F00E559FA = {
 			isa = PBXGroup;
 			children = (
+				3A53871E2C5850400012E298 /* Resources */,
 				3A3C604B2C447D960068CF65 /* AdjustProjectSettings.zsh */,
 				3AD257A72C3AFD9A00AD6254 /* Shared */,
 				3A46A0CE2C1B7F4000E9515A /* Screenshots */,
@@ -381,6 +392,7 @@
 				3A7471982C1A3D7000E559FA /* Assets.xcassets in Resources */,
 				3ABBF9682C3360FF00490E62 /* License.html in Resources */,
 				3AF451DA2C1E62E3003034C7 /* Localizable.xcstrings in Resources */,
+				3A5387202C58506F0012E298 /* PayloadMetadata.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
