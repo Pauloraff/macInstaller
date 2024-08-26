@@ -68,19 +68,71 @@ struct InstallerStepView: View {
     }
 }
 
-enum InstallerTask: String {
-    case stopService = "STOP_SERVICE"               // detect whether the daemon is running (update install) or not (fresh install) and stop it if it is running.
+let InstallerTaskNames = [
+    "NO MATCH",
+    "STOP_SERVICE" ,
+    "COPY_NEW_SERVICE",
+    "START_SERVICE",
+    "CLEAN_UP_FILES"
+]
+enum InstallerTask: Int {
+    case stopService = 1 // "STOP_SERVICE"               // detect whether the daemon is running (update install) or not (fresh install) and stop it if it is running.
     // stopService == 'sudo launctl unload <service identifier>
-    case copyCurrentInstallation = "COPY_NEW_SERVICE"   // saves a copy of any files changed by the installation,
+    case copyNewService = 2 // "COPY_NEW_SERVICE"   // saves a copy of any files changed by the installation,
     // copies all required files to their destinations,
     // and if there is an error, undoes all the copies and leaves the file system
     // in the same state it was before copyCurrentInstallation ran.
-    case startService = "START_SERVICE"              // start/restart the installed service.
-    case cleanupPreviousInstallation = "CLEAN_UP_FILES" // remove any files that were part of the previous installation, if any.
+    case startService = 3 // "START_SERVICE"              // start/restart the installed service.
+    case cleanUpFiles = 4 // "CLEAN_UP_FILES" // remove any files that were part of the previous installation, if any.
+}
+
+enum InstallerTaskState: Int {
+    case pending = 1
+    case running = 2
+    case completed = 3
+    case failed = 4
+    case skipped = 5
+}
+
+struct InstallerTaskModel: Identifiable {
+    let task: InstallerTask
+    let state: InstallerTaskState
+    
+    var id: Int { task.rawValue << 4 | state.rawValue  }
+}
+
+struct InstallerTaskView: View {
+    let stateModel: InstallerTaskModel
+    
+    init(model: InstallerTaskModel) {
+        self.stateModel = model
+    }
 
     var body: some View {
         HStack {
-            Text(LocalizedStringKey(rawValue))
+            switch stateModel.state {
+                case .pending:
+                    Image(systemName: "circle.dotted") // "circle.dotted"
+                    Text(LocalizedStringKey(InstallerTaskNames[stateModel.task.rawValue]))
+                    Spacer()
+                case .running:
+                    Image(systemName: "arrow.triangle.2.circlepath").bold() //
+                    Text(LocalizedStringKey(InstallerTaskNames[stateModel.task.rawValue])).bold()
+                case .skipped:
+                    Image(systemName: "minus.circle")
+                    Text(LocalizedStringKey(InstallerTaskNames[stateModel.task.rawValue])).strikethrough()
+                case .completed:
+                    Image(systemName: "checkmark.circle")
+                    let completed = AttributedString(InstallerTaskNames[stateModel.task.rawValue],
+                                                     attributes: AttributeContainer().foregroundColor(Color(red:0, green:0.8, blue:0)))
+                    Text(completed).bold()
+                case .failed:
+                    Image(systemName: "exclamationmark.circle")
+                    let failed = AttributedString(InstallerTaskNames[stateModel.task.rawValue],
+                                                  attributes: AttributeContainer().foregroundColor(Color(red:0.0, green:0, blue:0)))
+                    Text(failed).bold()
+            }
+                
         }
     }
 }
@@ -92,9 +144,26 @@ enum InstallerTask: String {
     var permissionsGranted = false // Did the user enter admin credentials?
     var successful = false // This is set to true before the installation tasks are run
     var summaryMessage = ""
+    var stages: [InstallerTaskModel] = [
+        InstallerTaskModel( task: InstallerTask.stopService, state: InstallerTaskState.pending ),
+        InstallerTaskModel( task: InstallerTask.copyNewService, state: InstallerTaskState.pending ),
+        InstallerTaskModel( task: InstallerTask.startService, state: InstallerTaskState.pending ),
+        InstallerTaskModel( task: InstallerTask.cleanUpFiles, state: InstallerTaskState.pending )
+    ]
+
+    init(step: InstallerStep, licenseAccepted: Bool = false, freshInstall: Bool = true, permissionsGranted: Bool = false, successful: Bool = false, summaryMessage: String = "") {
+        self.step = step
+        self.licenseAccepted = licenseAccepted
+        self.freshInstall = freshInstall
+        self.permissionsGranted = permissionsGranted
+        self.successful = successful
+        self.summaryMessage = summaryMessage
+    }
     
     func gotoSummary() {
-        if !licenseAccepted {
+        if !permissionsGranted {
+            summaryMessage = String(localized:"PERMISSIONS_DECLINED") // user did not grant background service permissions
+        } else if !licenseAccepted {
             summaryMessage = String(localized:"LICENSE_DECLINED") // user rejected license
         } else if successful {
             summaryMessage = String(localized:"INSTALL_SUCCEEDED") // install succeeded
@@ -125,6 +194,37 @@ enum InstallerTask: String {
             step = prev
         }
     }
+    
+    func begin(what: InstallerTaskModel) {
+        let stepIndex = stages.firstIndex(where: { stage in stage.task == what.task && stage.state == .pending})
+        if let stepIndex = stepIndex {
+            let removed = stages.remove(at: stepIndex)
+            stages.insert(InstallerTaskModel(task: removed.task, state: .running), at: stepIndex)
+        }
+    }
+
+    func handle(result: Bool) {
+        if result {
+            let stepIndex = stages.firstIndex(where: { stage in stage.state == .running})
+
+            if let stepIndex = stepIndex {
+                let removed = stages.remove(at: stepIndex)
+                stages.insert(InstallerTaskModel(task: removed.task, state: .completed), at: stepIndex)
+            }
+        } else {
+            successful = false
+            
+            stages = stages.map { item in
+                if item.state == .running {
+                    return InstallerTaskModel(task: item.task, state: .completed)
+                } else if item.state == .pending {
+                    return InstallerTaskModel(task: item.task, state: .skipped)
+                } else {
+                    return item
+                }
+            }
+        }
+    }
 }
 
 class WebViewData: ObservableObject {
@@ -136,10 +236,9 @@ class WebViewData: ObservableObject {
   }
 }
 
-
 struct ContentView: View {
     var client = XPCClient()
-    @State var model: InstallerState = InstallerState()
+    @State var model: InstallerState = InstallerState(step: .introduction)
 
     func continueButtonClicked() {
         model.gotoNext()
@@ -157,12 +256,62 @@ struct ContentView: View {
         // Save the license to a file
     }
     
-    func bundleURL(fileName: String, fileExtension: String) -> URL {
-        if let fileURL = Bundle.main.url(forResource: fileName, withExtension: fileExtension, subdirectory: "www") {
+    func bundleURL(fileName: String, fileExtension: String) -> URL? {
+        if let fileURL = Bundle.main.url(forResource: fileName, withExtension: fileExtension) {
             return fileURL
         } else {
             print("File not found")
-            return URL(string: "")!
+            return nil
+        }
+    }
+    
+    func handleCompletedTask(_ result: Bool) {
+        if result {
+            model.handle(result: result)
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                runNextAvailableTask()
+            }
+        } else {
+            model.handle(result: result)
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+                // Tell the model to go to the summary page.
+                model.gotoSummary()
+            }
+        }
+    }
+    
+    func runNextAvailableTask() {
+        // The manifestURL points to the file in the app bundle that is the PayloadMetadata.plist;
+        // all the other files in the payload are in the same directory in the app bundle.
+        if let next = model.stages.first(where: { $0.state == .pending }), let manifestURL = bundleURL(fileName: "PayloadMetadata", fileExtension: "plist") {
+            // we tell the client to perform a task
+            model.begin(what: next)
+            switch next.task {
+                case .stopService:
+                    client.stopService(manifestURL) { result in
+                         handleCompletedTask(result)
+                    }
+                case .copyNewService:
+                    // We pass the path of the metadata file to the service
+                    client.copyNewService(manifestURL) { result in
+                        handleCompletedTask(result)
+                    }
+                case .startService:
+                    client.startService(manifestURL) { result in
+                        handleCompletedTask(result)
+                    }
+                case .cleanUpFiles:
+                    client.cleanupFiles(manifestURL) { result in
+                        handleCompletedTask(result)
+                    }
+            }
+        } else {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+                // Tell the model to go to the summary page.
+                model.gotoSummary()
+            }
         }
     }
     
@@ -204,47 +353,51 @@ struct ContentView: View {
                         Spacer()
                     }
                 }
-                
                 if (model.step == .awaitingLicenseAcceptance) {
                         AcceptanceView().environment(model)
                 }
-
                 if (model.step == .installation) {
                     // List of actions to undertake
                     // These all require that the helper service have been given permissions
                     VStack(alignment: .leading) {
-                        Text("STOP_SERVICE").multilineTextAlignment(.center)
-                        Text("COPY_NEW_SERVICE").multilineTextAlignment(.center)
-                        Text("START_SERVICE").multilineTextAlignment(.center)
-                        Text("CLEAN_UP_FILES").multilineTextAlignment(.center)
-                        Text("RESTORE_SERVICE").multilineTextAlignment(.center).hidden()
+                        ForEach(model.stages) { stage in
+                            InstallerTaskView(model: stage)
+                        }
+                        Spacer()
+                    }.frame(maxWidth: 500.0)
+                        .padding(.leading, 10.0)
+                        .border(Color.gray, width: /*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/)
+                        .background(Color.white)
+                        .onAppear(perform: {
+                            // run the next task
+                            runNextAvailableTask()
+                        })
+                    
+                    /*
+                    VStack(alignment: .leading) {
+                        ForEach(stages.indices) { i in
+                            stages[i]
+                        }
                         Spacer()
                     }.layoutPriority(1).onAppear(perform: {
-                        // fake install actions - delay five seconds, then fake a successful installation and transition to
-                        // the summary screen
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
-                            // Tell the model to go to the summary page.
-                            model.gotoSummary()
-                        }
+                        // run the next task
+                        runNextAvailableTask()
                     })
+                    */
                 }
+
                 if (model.step == .summary) {
-                    // failed to install:
-                    // was it because the license was rejected?
-                    
-                    VStack(alignment: .leading) {
+                     VStack(alignment: .leading) {
                         if (model.successful) {
                             Text("SUMMARY_SUCCESS")
                         } else if (!model.permissionsGranted) {
                             Text("PERMISSIONS_DECLINED")
-                        } else if (model.licenseAccepted) {
-                            if (model.freshInstall) {
-                                Text("SUMMARY_SUCCESS")
-                            } else {
-                                Text("SUMMARY_ROLLBACK")
-                            }
-                        } else {
+                        } else if (!model.licenseAccepted) {
                             Text("LICENSE_DECLINED")
+                        } else if (model.freshInstall) {
+                            Text("INSTALL_FAILED")
+                        } else {
+                            Text("INSTALL_ROLLBACK")
                         }
                         Spacer()
                     }
@@ -307,6 +460,7 @@ struct AcceptanceView: View {
                     model.step = .summary
                 }
                 Button("ACCEPT") {
+                    model.successful = true
                     model.licenseAccepted = true
                     model.step = .installation
                 }
@@ -317,5 +471,5 @@ struct AcceptanceView: View {
 }
 
 #Preview {
-    ContentView()
+    ContentView(model: InstallerState(step: .installation, licenseAccepted: false, freshInstall: true, permissionsGranted: false, successful: false, summaryMessage: ""))
 }
