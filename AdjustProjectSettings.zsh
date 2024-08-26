@@ -9,13 +9,15 @@
 # CLIENTNAME name of main (client) program: com.greenkitty.macinstaller
 # HELPERNAME name of helper service: com.greenkitty.macinstallerhelper
 # SIGNINGCERT Name of signing cert is 'Developer ID Application: Paulo Raffaelli (2XEVFK8ZST)'
-#
+# COMPANYNAME Name for folder created in /Library/Application Support for the installed software.
+
 echo "Client app bundle identifier is $CLIENTNAME"
 echo "Background service bundle identifier is $HELPERNAME"
 echo "Signing cert for both app and service is $SIGNINGCERT"
+echo "Company name for installed software is $COMPANYNAME"
 
 # sample invocation
-# SIGNINGCERT="Developer ID Application: Paulo Raffaelli (2XEVFK8ZST)" CLIENTNAME="com.greenkitty.macinstaller" HELPERNAME="com.greenkitty.macinstallerhelper" ./AdjustProjectSettings.zsh
+# SIGNINGCERT="Developer ID Application: Paulo Raffaelli (2XEVFK8ZST)" CLIENTNAME="com.greenkitty.macinstaller" HELPERNAME="com.greenkitty.macinstallerhelper" COMPANYMAME="Green Kitty" ./AdjustProjectSettings.zsh
 # Note that if CLIENTNAME is a prefix of HELPERNAME, this script works.
 # If HELPERNAME is a prefix of CLIENTNAME, then this script will fail.
 
@@ -57,6 +59,12 @@ rm temp5.out
 # copy modified .pbxproj file over
 rm macInstaller/macInstaller.xcodeproj/project.pbxproj
 mv temp6.out macInstaller/macInstaller.xcodeproj/project.pbxproj
+
+# macInstaller/Resources/PayloadMetadata.plist
+sed "s/HELPERNAME/$HELPERNAME/g" macInstaller/Resources/PayloadMetadata.plist > temp.out
+mv temp.out macInstaller/Resources/PayloadMetadata.plist
+sed "s/COMPANYNAME/$COMPANYNAME/g" macInstaller/Resources/PayloadMetadata.plist > temp.out
+mv temp.out macInstaller/Resources/PayloadMetadata.plist
 
 # macInstaller/macInstaller/Info.plist:
 # key 'HELPERNAME'

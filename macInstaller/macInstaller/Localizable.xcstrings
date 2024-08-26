@@ -56,6 +56,7 @@
       }
     },
     "CLEAN_UP_FILES" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -76,6 +77,7 @@
       }
     },
     "COPY_NEW_SERVICE" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -230,6 +232,7 @@
       }
     },
     "RESTORE_SERVICE" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -250,6 +253,7 @@
       }
     },
     "START_SERVICE" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -260,6 +264,7 @@
       }
     },
     "STOP_SERVICE" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -281,6 +286,7 @@
       }
     },
     "SUMMARY_ROLLBACK" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

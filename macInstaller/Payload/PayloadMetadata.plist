@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>BundleID</key>
+	<string>com.greenkitty.product</string>
+	<key>Files</key>
+	<array>
+		<dict>
+			<key>Destination</key>
+			<string>/Library/LaunchDaemons/</string>
+			<key>Filename</key>
+			<string>com.greenkitty.product.plist</string>
+			<key>OwnerGroup</key>
+			<string>root:wheel</string>
+			<key>Permissions</key>
+			<string>-rw-r--r--</string>
+		</dict>
+		<dict>
+			<key>Destination</key>
+			<string>/Library/PrivilegedHelperTools/</string>
+			<key>Filename</key>
+			<string>com.greenkitty.product</string>
+			<key>OwnerGroup</key>
+			<string>root:wheel</string>
+			<key>Permissions</key>
+			<string>-r-xr--r--</string>
+		</dict>
+	</array>
+</dict>
+</plist>
