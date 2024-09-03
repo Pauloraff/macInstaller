@@ -119,6 +119,10 @@
 		3AD257B52C3B024E00AD6254 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3AD8B5232C5DA38E00EABC7E /* RestoreProjectSettings.zsh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = RestoreProjectSettings.zsh; path = ../RestoreProjectSettings.zsh; sourceTree = "<group>"; };
 		3AF451D92C1E62E3003034C7 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		3AF60E222C86851300046F62 /* Destination select - initial.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Destination select - initial.png"; sourceTree = "<group>"; };
+		3AF60E232C86851B00046F62 /* Standard install - summary.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Standard install - summary.png"; sourceTree = "<group>"; };
+		3AF60E242C86852100046F62 /* Destination select - me only.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Destination select - me only.png"; sourceTree = "<group>"; };
+		3AF60E252C86852600046F62 /* me only - summary.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "me only - summary.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -172,6 +176,10 @@
 				3A46A0D72C1B7F9100E9515A /* Final auth screen.png */,
 				3A46A0D82C1B7FAB00E9515A /* Install progress screen.png */,
 				3A46A0D92C1B7FBC00E9515A /* Installation summary screen.png */,
+				3AF60E222C86851300046F62 /* Destination select - initial.png */,
+				3AF60E232C86851B00046F62 /* Standard install - summary.png */,
+				3AF60E242C86852100046F62 /* Destination select - me only.png */,
+				3AF60E252C86852600046F62 /* me only - summary.png */,
 			);
 			path = Screenshots;
 			sourceTree = "<group>";

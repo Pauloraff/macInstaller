@@ -9,7 +9,12 @@ class InstallerImpl: NSObject, Installer {
     // Metadata is in the same folder in the app bundle as all of the files to be copied,
     // so we can check that all the filenames in the payload metadata match files in the
     // app bundle.
-    func loadManifest(_ manifestURL: URL) -> [String:Any]? {
+    // Dictionary
+    // -> BundleID: String
+    // -> Payloads: [String:[String:[[String:String]]]]
+    // -> -> "System": [String:[[String:String]]]
+    // -> -> -> "Files": [[String:String]]
+    func loadManifest(_ manifestURL: URL, _ context: String) -> [String:Any]? {
         let payloadFolderURL = manifestURL.deletingLastPathComponent()
 
         if let data = try? Data(contentsOf: manifestURL) {
@@ -20,7 +25,13 @@ class InstallerImpl: NSObject, Installer {
                     guard let bundleID = dict["BundleID"] as? String else {
                         return nil
                     }
-                    guard let files = dict["Files"] as? [[String:String]] else {
+                    guard let payloads = dict["Payloads"] as? [String:[String:[[String:String]]]] else {
+                        return nil
+                    }
+                    guard let contextFiles = payloads[context] else {
+                        return nil
+                    }
+                    guard let files = contextFiles["Files"] else {
                         return nil
                     }
                     guard let _ =  bundleID.wholeMatch(of: /^(\w+\.)+(\w)+$/) else {
@@ -89,9 +100,9 @@ class InstallerImpl: NSObject, Installer {
     // /usr/bin/sudo /bin/launchctl bootout system/PRODUCTNAME (BundleID in manifestURL)
     // Detect:
     // /usr/bin/sudo /bin/launchctl list: loop over lines looking for
-    func stopService(_ manifestURL: URL, completion: @escaping (Bool) -> ()) {
+    func stopService(_ manifestURL: URL, _ context: String, completion: @escaping (Bool) -> ()) {
         // load the file indicated by manifestURL
-        guard let manifest = loadManifest(manifestURL) else {
+        guard let manifest = loadManifest(manifestURL, context) else {
             completion(false)
             return
         }
@@ -105,6 +116,7 @@ class InstallerImpl: NSObject, Installer {
             try Process.run(url, arguments: args) { (process) in
                 NSLog("\ndidFinish: \(!process.isRunning)")
                 let status = process.terminationStatus
+                Thread.sleep(forTimeInterval: 1.0)
                 completion(status == 0 || status == 3) // 0: success, 3: service not found
             }
         } catch {
@@ -113,12 +125,20 @@ class InstallerImpl: NSObject, Installer {
         }
     }
     
-    func copyNewService(_ manifestURL: URL, completion: @escaping (Bool) -> ()) {
-        guard let manifest = loadManifest(manifestURL) else {
+    func copyNewService(_ manifestURL: URL, _ context: String, completion: @escaping (Bool) -> ()) {
+        guard let manifest = loadManifest(manifestURL, context) else {
             completion(false)
             return
         }
-        guard let fileList = manifest["Files"] as? [[String:String]] else {
+        guard let payloads = manifest["Payloads"] as? [String:[String:[[String:String]]]] else {
+            completion(false)
+            return
+        }
+        guard let contextFiles = payloads[context] else {
+            completion(false)
+            return
+        }
+        guard let fileList = contextFiles["Files"] else {
             completion(false)
             return
         }
@@ -249,12 +269,13 @@ class InstallerImpl: NSObject, Installer {
                 success = false
             }
         }
+        Thread.sleep(forTimeInterval: 1.0)
         completion(success)
     }
     
-    func startService(_ manifestURL: URL, completion: @escaping (Bool) -> ()) {
+    func startService(_ manifestURL: URL, _ context: String, completion: @escaping (Bool) -> ()) {
         // load the file indicated by manifestURL
-        guard let manifest = loadManifest(manifestURL) else {
+        guard let manifest = loadManifest(manifestURL, context) else {
             completion(false)
             return
         }
@@ -262,7 +283,15 @@ class InstallerImpl: NSObject, Installer {
             completion(false)
             return
         }
-        guard let fileList = manifest["Files"] as? [[String:String]] else {
+        guard let payloads = manifest["Payloads"] as? [String:[String:[[String:String]]]] else {
+            completion(false)
+            return
+        }
+        guard let contextFiles = payloads[context] else {
+            completion(false)
+            return
+        }
+        guard let fileList = contextFiles["Files"] else {
             completion(false)
             return
         }
@@ -288,6 +317,7 @@ class InstallerImpl: NSObject, Installer {
                     try Process.run(url, arguments: args) { (process) in
                         NSLog("\nis running: \(process.isRunning)")
                         let status = process.terminationStatus
+                        Thread.sleep(forTimeInterval: 1.0)
                         completion(status == 0)
                         return
                     }
@@ -300,16 +330,24 @@ class InstallerImpl: NSObject, Installer {
         }
     }
     
-    func cleanupFiles(_ manifestURL: URL, completion: @escaping (Bool) -> ()) {
-        guard let manifest = loadManifest(manifestURL) else {
+    func cleanupFiles(_ manifestURL: URL, _ context: String, completion: @escaping (Bool) -> ()) {
+        guard let manifest = loadManifest(manifestURL, context) else {
             completion(false)
             return
         }
-        guard let fileList = manifest["Files"] as? [[String:String]] else {
+        guard let payloads = manifest["Payloads"] as? [String:[String:[[String:String]]]] else {
             completion(false)
             return
         }
-        
+        guard let contextFiles = payloads[context] else {
+            completion(false)
+            return
+        }
+        guard let fileList = contextFiles["Files"] else {
+            completion(false)
+            return
+        }
+
         var success = true
         
         //   for each file in manifest:
@@ -343,6 +381,7 @@ class InstallerImpl: NSObject, Installer {
         } catch {
             success = false
         }
+        Thread.sleep(forTimeInterval: 1.0)
         completion(success)
     }
     
