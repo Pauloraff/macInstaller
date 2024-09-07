@@ -152,12 +152,52 @@ struct InstallerTaskView: View {
     }
 }
 
+enum InstallerScope: String, Identifiable {
+    case allUsers = "AllUsers"
+    case user = "User"
+    
+    var id: Int { rawValue.hash  }
+}
+
 func bundleURL(fileName: String, fileExtension: String) -> URL? {
     if let fileURL = Bundle.main.url(forResource: fileName, withExtension: fileExtension) {
         return fileURL
     } else {
         print("File not found")
         return nil
+    }
+}
+
+struct InstallerScopeChoice: Identifiable {
+    let choice: InstallerScope
+    let installSize: Int64
+    
+    var id: Int { choice.rawValue.hash  }
+}
+
+struct InstallerScopeChoiceView: View {
+    let stateModel: InstallerState
+    let choice: InstallerScopeChoice
+    
+    init(model: InstallerState, choice: InstallerScopeChoice) {
+        self.stateModel = model
+        self.choice = choice
+    }
+
+    var body: some View {
+        HStack {
+            switch self.choice.choice {
+                case .allUsers:
+                    Image(systemName: "desktopcomputer").resizable()
+                        .frame(width: 32.0, height: 32.0)
+                    Text("All users")
+                case .user:
+                    Image(systemName: "person")
+                        .resizable().frame(width: 32.0, height: 32.0)
+                    Text("Only the logged-in user")
+            }
+            Spacer()
+        }.backgroundStyle(self.choice.choice == stateModel.selectedChoice.choice ? .green : .gray)
     }
 }
 
@@ -168,8 +208,8 @@ func bundleURL(fileName: String, fileExtension: String) -> URL? {
     var permissionsGranted = false // Did the user enter admin credentials?
     var successful = false // This is set to true before the installation tasks are run
     var summaryMessage = ""
-    var choices: [String] = []
-    var selectedChoice: String?
+    var choices: [InstallerScopeChoice] = []
+    var selectedChoice: InstallerScopeChoice
     
     var stages: [InstallerTaskModel] = [
         InstallerTaskModel( task: InstallerTask.stopService, state: InstallerTaskState.pending ),
@@ -187,20 +227,46 @@ func bundleURL(fileName: String, fileExtension: String) -> URL? {
         self.summaryMessage = summaryMessage
         
         self.choices = []
-        
+        self.selectedChoice = InstallerScopeChoice(choice: .allUsers, installSize: 0)
+    
         // set up the set of installer scenarios. If there is only one, then we don't
         // present the screen where the user is given a choice.
         if let manifestURL = bundleURL(fileName: "PayloadMetadata", fileExtension: "plist") {
             let payloadFolderURL = manifestURL.deletingLastPathComponent()
-
             if let data = try? Data(contentsOf: manifestURL) {
                 if let result = try? PropertyListSerialization.propertyList(from: data, options: [], format: nil) {
                     if let dict = result as? [String:Any] {
                         if let payloads = dict["Payloads"] as? [String:Any] {
                             let keys = payloads.keys.map { $0 as String }
                             for key in keys {
-                                if key == "System" || key == "AllUsers" || key == "User" {
-                                    self.choices.append(key)
+                                if key == InstallerScope.allUsers.rawValue || key == InstallerScope.user.rawValue {
+                                    if let scope = InstallerScope(rawValue: key) {
+                                        // calculate size of payload
+                                        var payloadSize: Int64 = 0
+                                        if let specificPayload = payloads[key] as? [String:Any] {
+                                            if let specificFiles = specificPayload["Files"] as? [[String:String]] {
+                                                for file in specificFiles {
+                                                    if let dest = file["Filename"] {
+                                                        // add size of file in Resources to payloadSize
+                                                        let fileURL = payloadFolderURL.appending(component: dest)
+                                                        
+                                                        if FileManager.default.fileExists(atPath: fileURL.path) {
+                                                            do {
+                                                                let attr = try FileManager.default.attributesOfItem(atPath: fileURL.path) as [FileAttributeKey:Any]
+                                                                let fileSize = attr[.size] as! Int64
+                                                                payloadSize += fileSize
+                                                            } catch {
+                                                                
+                                                            }
+                                                        }
+                                                        
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        
+                                        self.choices.append(InstallerScopeChoice(choice: scope, installSize: payloadSize))
+                                    }
                                 }
                             }
                         }
@@ -209,6 +275,9 @@ func bundleURL(fileName: String, fileExtension: String) -> URL? {
             }
         }
         
+        self.choices.sort(by: { first, second in
+            return first.choice.rawValue == "AllUsers"
+        })
         if self.choices.count == 1 {
             self.selectedChoice = self.choices[0]
         }
@@ -347,20 +416,20 @@ struct ContentView: View {
             model.begin(what: next)
             switch next.task {
                 case .stopService:
-                    client.stopService(manifestURL, model.selectedChoice ?? "") { result in
+                    client.stopService(manifestURL, model.selectedChoice.choice.rawValue) { result in
                          handleCompletedTask(result)
                     }
                 case .copyNewService:
                     // We pass the path of the metadata file to the service
-                    client.copyNewService(manifestURL, model.selectedChoice ?? "") { result in
+                    client.copyNewService(manifestURL, model.selectedChoice.choice.rawValue) { result in
                         handleCompletedTask(result)
                     }
                 case .startService:
-                    client.startService(manifestURL, model.selectedChoice ?? "") { result in
+                    client.startService(manifestURL, model.selectedChoice.choice.rawValue) { result in
                         handleCompletedTask(result)
                     }
                 case .cleanUpFiles:
-                    client.cleanupFiles(manifestURL, model.selectedChoice ?? "") { result in
+                    client.cleanupFiles(manifestURL, model.selectedChoice.choice.rawValue) { result in
                         handleCompletedTask(result)
                     }
             }
@@ -371,7 +440,9 @@ struct ContentView: View {
             }
         }
     }
-    
+
+    @State var singleSelection: InstallerScopeChoice.ID?
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             // Top section: Title
@@ -425,15 +496,49 @@ struct ContentView: View {
                 }
                 if model.step == .scopeSelection {
                     VStack(alignment: .leading) {
+                        Text("How do you want to install this software?").padding(.leading, 10.0).padding(.trailing, 10.0).padding(.top, 20.0).padding(.bottom, 20.0)
+                        Divider()
+                        // selection: $singleSelection
+                        List(selection: $singleSelection) {
+                            ForEach(model.choices) { choice in
+                                InstallerScopeChoiceView(model: model, choice: choice).padding(.leading, 20.0).padding(.top, 10.0).padding(.bottom, 10.0)
+                            }
+                        }.listRowSeparator(.hidden)
+                            .onAppear(perform: {
+                                for choice in model.choices {
+                                    if choice.choice == InstallerScope(rawValue: "AllUsers") {
+                                        singleSelection = choice.id
+                                    }
+                                }
+                            })
+                            .onChange(of: singleSelection) {
+                            _, beta in
+                            for choice in model.choices {
+                                if choice.id == beta {
+                                    model.selectedChoice = choice
+                                }
+                            }
+                        }
+                        Divider()
                         Spacer()
+
+                        // Installing this software requires XXX of disk space"
+                        Text("Installing this software requires \(model.selectedChoice.installSize) bytes of disk space")
+                        Text("")
+                        switch model.selectedChoice.choice {
+                            case .allUsers:
+                                Text("You have chosen to install this software for all users of this computer")
+                                Text("")
+                                Text("Only the current user will be able to use this software")
+                            case .user:
+                                Text("You have chosen to install this software in your home folder")
+                                Text("")
+                                Text("Only the current user will be able to use this software")
+                        }
                     }.frame(maxWidth: 500.0)
                         .padding(.leading, 10.0)
                         .border(Color.gray, width: /*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/)
                         .background(Color.white)
-                        .onAppear(perform: {
-                            // run the next task
-                            runNextAvailableTask()
-                        })
                 }
                 if model.step == .scopeDescription {
                     VStack(alignment: .leading) {
@@ -442,10 +547,6 @@ struct ContentView: View {
                         .padding(.leading, 10.0)
                         .border(Color.gray, width: /*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/)
                         .background(Color.white)
-                        .onAppear(perform: {
-                            // run the next task
-                            runNextAvailableTask()
-                        })
                 }
                 if model.step == .installation {
                     // List of actions to undertake

@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3A402E0D2C73B1BF000DE1BC /* com.greenkitty.product in Resources */ = {isa = PBXBuildFile; fileRef = 3A402E0C2C73B1BF000DE1BC /* com.greenkitty.product */; };
-		3A402E0F2C73B1C8000DE1BC /* com.greenkitty.product.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3A402E0E2C73B1C8000DE1BC /* com.greenkitty.product.plist */; };
 		3A402E142C73DC50000DE1BC /* PayloadMetadata.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3A402E132C73DC4F000DE1BC /* PayloadMetadata.plist */; };
 		3A7471942C1A3D6F00E559FA /* macInstallerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7471932C1A3D6F00E559FA /* macInstallerApp.swift */; };
 		3A7471962C1A3D6F00E559FA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7471952C1A3D6F00E559FA /* ContentView.swift */; };
@@ -17,6 +15,10 @@
 		3A7471A62C1A3D7000E559FA /* macInstallerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7471A52C1A3D7000E559FA /* macInstallerTests.swift */; };
 		3A7471B02C1A3D7000E559FA /* macInstallerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7471AF2C1A3D7000E559FA /* macInstallerUITests.swift */; };
 		3A7471B22C1A3D7000E559FA /* macInstallerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7471B12C1A3D7000E559FA /* macInstallerUITestsLaunchTests.swift */; };
+		3A7EA83A2C8BA17B0092530D /* com.greenkitty.product in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3A7EA82E2C8B9CBB0092530D /* com.greenkitty.product */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3A7EA83B2C8BA17E0092530D /* com.greenkitty.product.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3A7EA82F2C8B9CBB0092530D /* com.greenkitty.product.plist */; };
+		3A7EA83F2C8BA1D40092530D /* com.greenkitty.product.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3A7EA83D2C8BA1D40092530D /* com.greenkitty.product.plist */; };
+		3A7EA8402C8BA1D40092530D /* com.greenkitty.product in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3A7EA83E2C8BA1D40092530D /* com.greenkitty.product */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3ABBF9682C3360FF00490E62 /* License.html in Resources */ = {isa = PBXBuildFile; fileRef = 3ABBF9672C3360FF00490E62 /* License.html */; };
 		3ABBF96C2C3364BD00490E62 /* HTMLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABBF96B2C3364BD00490E62 /* HTMLView.swift */; };
 		3AD257962C3AF69400AD6254 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD257952C3AF69400AD6254 /* main.swift */; };
@@ -57,6 +59,28 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		3A7EA8392C8BA16B0092530D /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = AllUsers;
+			dstSubfolderSpec = 7;
+			files = (
+				3A7EA83B2C8BA17E0092530D /* com.greenkitty.product.plist in CopyFiles */,
+				3A7EA83A2C8BA17B0092530D /* com.greenkitty.product in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3A7EA83C2C8BA1970092530D /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = User;
+			dstSubfolderSpec = 7;
+			files = (
+				3A7EA83F2C8BA1D40092530D /* com.greenkitty.product.plist in CopyFiles */,
+				3A7EA8402C8BA1D40092530D /* com.greenkitty.product in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3AD257912C3AF69400AD6254 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -80,8 +104,6 @@
 
 /* Begin PBXFileReference section */
 		3A3C604B2C447D960068CF65 /* AdjustProjectSettings.zsh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = AdjustProjectSettings.zsh; path = ../AdjustProjectSettings.zsh; sourceTree = "<group>"; };
-		3A402E0C2C73B1BF000DE1BC /* com.greenkitty.product */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = com.greenkitty.product; sourceTree = "<group>"; };
-		3A402E0E2C73B1C8000DE1BC /* com.greenkitty.product.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = com.greenkitty.product.plist; sourceTree = "<group>"; };
 		3A402E102C73DB42000DE1BC /* SetupPayloadMetadata.zsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; name = SetupPayloadMetadata.zsh; path = ../SetupPayloadMetadata.zsh; sourceTree = "<group>"; };
 		3A402E132C73DC4F000DE1BC /* PayloadMetadata.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PayloadMetadata.plist; sourceTree = "<group>"; };
 		3A46A0CF2C1B7F5100E9515A /* License screen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "License screen.png"; sourceTree = "<group>"; };
@@ -102,6 +124,10 @@
 		3A7471B12C1A3D7000E559FA /* macInstallerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = macInstallerUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		3A7471BE2C1A3DF000E559FA /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		3A7471BF2C1A3DF000E559FA /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		3A7EA82E2C8B9CBB0092530D /* com.greenkitty.product */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = com.greenkitty.product; sourceTree = "<group>"; };
+		3A7EA82F2C8B9CBB0092530D /* com.greenkitty.product.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = com.greenkitty.product.plist; sourceTree = "<group>"; };
+		3A7EA83D2C8BA1D40092530D /* com.greenkitty.product.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = com.greenkitty.product.plist; sourceTree = "<group>"; };
+		3A7EA83E2C8BA1D40092530D /* com.greenkitty.product */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = com.greenkitty.product; sourceTree = "<group>"; };
 		3ABBF9672C3360FF00490E62 /* License.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = License.html; sourceTree = SOURCE_ROOT; };
 		3ABBF96B2C3364BD00490E62 /* HTMLView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLView.swift; sourceTree = "<group>"; };
 		3AD257932C3AF69400AD6254 /* HELPERNAME */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = HELPERNAME; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -160,8 +186,8 @@
 		3A402E0B2C73B134000DE1BC /* Payload */ = {
 			isa = PBXGroup;
 			children = (
-				3A402E0C2C73B1BF000DE1BC /* com.greenkitty.product */,
-				3A402E0E2C73B1C8000DE1BC /* com.greenkitty.product.plist */,
+				3A7EA8332C8B9CBB0092530D /* User */,
+				3A7EA8302C8B9CBB0092530D /* AllUsers */,
 				3A402E132C73DC4F000DE1BC /* PayloadMetadata.plist */,
 			);
 			path = Payload;
@@ -256,6 +282,24 @@
 			path = macInstallerUITests;
 			sourceTree = "<group>";
 		};
+		3A7EA8302C8B9CBB0092530D /* AllUsers */ = {
+			isa = PBXGroup;
+			children = (
+				3A7EA82E2C8B9CBB0092530D /* com.greenkitty.product */,
+				3A7EA82F2C8B9CBB0092530D /* com.greenkitty.product.plist */,
+			);
+			path = AllUsers;
+			sourceTree = "<group>";
+		};
+		3A7EA8332C8B9CBB0092530D /* User */ = {
+			isa = PBXGroup;
+			children = (
+				3A7EA83E2C8BA1D40092530D /* com.greenkitty.product */,
+				3A7EA83D2C8BA1D40092530D /* com.greenkitty.product.plist */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
 		3AD257942C3AF69400AD6254 /* HELPERNAME */ = {
 			isa = PBXGroup;
 			children = (
@@ -290,6 +334,8 @@
 				3A74718D2C1A3D6F00E559FA /* Frameworks */,
 				3A74718E2C1A3D6F00E559FA /* Resources */,
 				3AD2579C2C3AF6A700AD6254 /* CopyFiles */,
+				3A7EA8392C8BA16B0092530D /* CopyFiles */,
+				3A7EA83C2C8BA1970092530D /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -407,8 +453,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A402E142C73DC50000DE1BC /* PayloadMetadata.plist in Resources */,
-				3A402E0F2C73B1C8000DE1BC /* com.greenkitty.product.plist in Resources */,
-				3A402E0D2C73B1BF000DE1BC /* com.greenkitty.product in Resources */,
 				3A74719B2C1A3D7000E559FA /* Preview Assets.xcassets in Resources */,
 				3A7471982C1A3D7000E559FA /* Assets.xcassets in Resources */,
 				3ABBF9682C3360FF00490E62 /* License.html in Resources */,

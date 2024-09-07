@@ -40,8 +40,8 @@ class InstallerImpl: NSObject, Installer {
 
                     for entry in files {
                         if let dest = entry["Destination"]  {
-                            // must start with '/' and must have at least one other character
-                            if dest.count <= 1 || !dest.hasPrefix("/") || !dest.hasSuffix("/") {
+                            // must start with '/', end with '/' and have at leaset one other character
+                            if dest.count < 3 || !dest.hasPrefix("/") || !dest.hasSuffix("/") {
                                 return nil
                             }
                         } else {
@@ -55,7 +55,7 @@ class InstallerImpl: NSObject, Installer {
                             return nil
                         }
                         if let dest = entry["Filename"] {
-                            let fileURL = payloadFolderURL.appending(component: dest)
+                            let fileURL = payloadFolderURL.appending(component: context).appending(component: dest)
                             
                             if !FileManager.default.fileExists(atPath: fileURL.path) {
                                return nil
@@ -193,11 +193,16 @@ class InstallerImpl: NSObject, Installer {
             //      if failure, remove /path/to/dest/file, mark task as failed and break
             //   end
             for fileMetadata in fileList {
-                let sourceFilePath = "\(payloadFolderURL.path)/\(fileMetadata["Filename"]!)"
-                let destFilePath = "\(fileMetadata["Destination"]!)\(fileMetadata["Filename"]!)"
+                let sourceFilePath = "\(payloadFolderURL.path)/\(context)/\(fileMetadata["Filename"]!)"
+                let filename = fileMetadata["Filename"]!
+                let destFilePath = "\(fileMetadata["Destination"]!)\(filename)"
                 
                 // copy sourceFilePath to destFilePath
                 do {
+                    if FileManager.default.fileExists(atPath: destFilePath) {
+                        try FileManager.default.removeItem(atPath: destFilePath)
+                    }
+                    
                     try FileManager.default.copyItem(atPath: sourceFilePath, toPath: destFilePath)
                     
                     // set permissions and owner:group
@@ -367,11 +372,13 @@ class InstallerImpl: NSObject, Installer {
                     break
                 }
                 // restore from savedFilePath
-                do {
-                    try FileManager.default.moveItem(atPath: savedFilePath, toPath: destFilePath)
-                } catch {
-                    success = false
-                    break
+                if FileManager.default.fileExists(atPath: savedFilePath) {                    
+                    do {
+                        try FileManager.default.moveItem(atPath: savedFilePath, toPath: destFilePath)
+                    } catch {
+                        success = false
+                        break
+                    }
                 }
             }
         }

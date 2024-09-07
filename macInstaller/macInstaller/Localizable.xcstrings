@@ -35,6 +35,9 @@
         }
       }
     },
+    "All users" : {
+
+    },
     "BACK" : {
       "localizations" : {
         "en" : {
@@ -107,6 +110,9 @@
         }
       }
     },
+    "How do you want to install this software?" : {
+
+    },
     "INSTALL_FAILED" : {
       "localizations" : {
         "en" : {
@@ -158,6 +164,9 @@
         }
       }
     },
+    "Installing this software requires %lld bytes of disk space" : {
+
+    },
     "INTRODUCTION" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -189,6 +198,12 @@
           }
         }
       }
+    },
+    "Only the current user will be able to use this software" : {
+
+    },
+    "Only the logged-in user" : {
+
     },
     "PERMISSIONS_DECLINED" : {
       "localizations" : {
@@ -327,6 +342,12 @@
           }
         }
       }
+    },
+    "You have chosen to install this software for all users of this computer" : {
+
+    },
+    "You have chosen to install this software in your home folder" : {
+
     }
   },
   "version" : "1.0"
