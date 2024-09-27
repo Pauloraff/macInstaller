@@ -87,6 +87,7 @@ plutil -insert "Payloads.AllUsers.Files.0.OwnerGroup" -string "root:wheel" "$PAY
 plutil -insert "Payloads.AllUsers.Files.0.Permissions" -string "-rw-r--r--" "$PAYLOAD_PLIST"
 plutil -insert "Payloads.AllUsers.Files.0.Destination" -string "$ALLUSER_SERVICE_PLIST_DEST_DIR" "$PAYLOAD_PLIST"
 plutil -insert "Payloads.AllUsers.Files.0.Filename" -string "$ALLUSER_SERVICE_PLIST" "$PAYLOAD_PLIST"
+plutil -insert "Payloads.AllUsers.Files.0.SHA256" -string "`shasum -a 256 "macInstaller/Payload/AllUsers/$ALLUSER_SERVICE_PLIST" | cut -d " " -f 1`" "$PAYLOAD_PLIST"
 
 plutil -insert "Payloads.AllUsers.Files.1" -dictionary "$PAYLOAD_PLIST"
 # system-level services must be owned by root:wheel
@@ -95,6 +96,7 @@ plutil -insert "Payloads.AllUsers.Files.1.OwnerGroup" -string "root:wheel" "$PAY
 plutil -insert "Payloads.AllUsers.Files.1.Permissions" -string "-r-xr--r--" "$PAYLOAD_PLIST"
 plutil -insert "Payloads.AllUsers.Files.1.Destination" -string "$ALLUSER_SERVICE_DEST_DIR" "$PAYLOAD_PLIST"
 plutil -insert "Payloads.AllUsers.Files.1.Filename" -string "$ALLUSER_SERVICE_EXEC" "$PAYLOAD_PLIST"
+plutil -insert "Payloads.AllUsers.Files.1.SHA256" -string "`shasum -a 256 "macInstaller/Payload/AllUsers/$ALLUSER_SERVICE_EXEC" | cut -d " " -f 1`" "$PAYLOAD_PLIST"
 
 ########## If Payloads.User is included, then the UI will allow the user to install the service for a single user ###
 plutil -insert "Payloads.User" -dictionary "$PAYLOAD_PLIST"
@@ -107,6 +109,7 @@ plutil -insert "Payloads.User.Files.0.OwnerGroup" -string "root:wheel" "$PAYLOAD
 plutil -insert "Payloads.User.Files.0.Permissions" -string "-rw-r--r--" "$PAYLOAD_PLIST"
 plutil -insert "Payloads.User.Files.0.Destination" -string "$USER_SERVICE_PLIST_DEST_DIR" "$PAYLOAD_PLIST"
 plutil -insert "Payloads.User.Files.0.Filename" -string "$USER_SERVICE_PLIST" "$PAYLOAD_PLIST"
+plutil -insert "Payloads.User.Files.0.SHA256" -string "`shasum -a 256 "macInstaller/Payload/User/$USER_SERVICE_PLIST" | cut -d " " -f 1`" "$PAYLOAD_PLIST"
 
 plutil -insert "Payloads.User.Files.1" -dictionary "$PAYLOAD_PLIST"
 # system-level services must be owned by root:wheel
@@ -115,14 +118,15 @@ plutil -insert "Payloads.User.Files.1.OwnerGroup" -string "root:wheel" "$PAYLOAD
 plutil -insert "Payloads.User.Files.1.Permissions" -string "-r-xr--r--" "$PAYLOAD_PLIST"
 plutil -insert "Payloads.User.Files.1.Destination" -string "$USER_SERVICE_DEST_DIR" "$PAYLOAD_PLIST"
 plutil -insert "Payloads.User.Files.1.Filename" -string "$USER_SERVICE_EXEC" "$PAYLOAD_PLIST"
+plutil -insert "Payloads.User.Files.1.SHA256" -string "`shasum -a 256 "macInstaller/Payload/User/$USER_SERVICE_EXEC" | cut -d " " -f 1`" "$PAYLOAD_PLIST"
 
 # PayloadMetadata.plist is checked whenever it is opened by the background service.
 # It must have the structure
 # BundleID -> String of the form ([a-zA-Z]+.)+[a-zA-Z]+
 # Files -> nonempty array of Dictionary
-# Each Dictionary must have these four keys:
+# Each Dictionary must have these five keys:
 # OwnerGroup -> "root:wheel"
 # Permissions -> "-(r|w|x){9}"
 # Destination -> /Library/...
 # Filename -> a filename for a file in the 'Payload' subdirectory
-
+# SHA256 -> the SHA 256 hash of the file being installed.

@@ -1,4 +1,5 @@
 import Foundation
+import CryptoKit
 
 class InstallerImpl: NSObject, Installer {
     var client: InstallationClient?
@@ -88,6 +89,22 @@ class InstallerImpl: NSObject, Installer {
                         } else {
                             return nil
                         }
+                        
+                        // verify that the SHA256 is in the metadata, and that it looks right.
+                        // We don't check the SHA256 until the file copy phase.
+                        if let dest = entry["SHA256"] {
+                            // must be 64 characters long (256 bits -> 32 bytes -> 64 characters
+                            if dest.lengthOfBytes(using: .ascii) != 64 {
+                                return nil
+                            }
+
+                            // all characters must be one of "0-9a-fA-F"
+                            if !dest.allSatisfy({ "0123456789abcdefABCDEF".contains($0) }) {
+                               return nil
+                            }
+                        } else {
+                            return nil
+                        }
                     }
                     return dict
                 }
@@ -96,6 +113,21 @@ class InstallerImpl: NSObject, Installer {
         
         return nil
     }
+    
+    func getSHA256(forFile url: URL) throws -> String {
+        let handle = try FileHandle(forReadingFrom: url)
+        var hasher = SHA256()
+        while autoreleasepool(invoking: {
+            let nextChunk = handle.readData(ofLength: SHA256.blockByteCount)
+            guard !nextChunk.isEmpty else { return false }
+            hasher.update(data: nextChunk)
+            return true
+        }) { }
+        let digest = hasher.finalize()
+        return digest.map { String(format: "%02hhx", $0) }.joined().lowercased()
+    }
+
+
     // System-level service:
     // /usr/bin/sudo /bin/launchctl bootout system/PRODUCTNAME (BundleID in manifestURL)
     // Detect:
@@ -199,6 +231,16 @@ class InstallerImpl: NSObject, Installer {
                 
                 // copy sourceFilePath to destFilePath
                 do {
+                    // Test the SHA256 stored in the metadata against the file we will be copying
+                    // and fail if they don't match
+                    let sha256 = fileMetadata["SHA256"]!.lowercased()
+                    let computedSHA256 = try getSHA256(forFile: URL(fileURLWithPath: sourceFilePath))
+                     
+                    if computedSHA256.compare(sha256) != .orderedSame {
+                        success = false
+                        break
+                    }
+                    
                     if FileManager.default.fileExists(atPath: destFilePath) {
                         try FileManager.default.removeItem(atPath: destFilePath)
                     }
@@ -391,7 +433,7 @@ class InstallerImpl: NSObject, Installer {
         Thread.sleep(forTimeInterval: 1.0)
         completion(success)
     }
-    
+
     func install() {
         NSLog("\(#function)")
         client?.installationDidReachProgress(1, description: "Finished!")

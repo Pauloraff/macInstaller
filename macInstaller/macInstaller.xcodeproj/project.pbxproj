@@ -15,10 +15,10 @@
 		3A7471A62C1A3D7000E559FA /* macInstallerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7471A52C1A3D7000E559FA /* macInstallerTests.swift */; };
 		3A7471B02C1A3D7000E559FA /* macInstallerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7471AF2C1A3D7000E559FA /* macInstallerUITests.swift */; };
 		3A7471B22C1A3D7000E559FA /* macInstallerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7471B12C1A3D7000E559FA /* macInstallerUITestsLaunchTests.swift */; };
-		3A7EA83A2C8BA17B0092530D /* com.greenkitty.product in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3A7EA82E2C8B9CBB0092530D /* com.greenkitty.product */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3A7EA83A2C8BA17B0092530D /* com.greenkitty.product in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3A7EA82E2C8B9CBB0092530D /* com.greenkitty.product */; };
 		3A7EA83B2C8BA17E0092530D /* com.greenkitty.product.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3A7EA82F2C8B9CBB0092530D /* com.greenkitty.product.plist */; };
 		3A7EA83F2C8BA1D40092530D /* com.greenkitty.product.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3A7EA83D2C8BA1D40092530D /* com.greenkitty.product.plist */; };
-		3A7EA8402C8BA1D40092530D /* com.greenkitty.product in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3A7EA83E2C8BA1D40092530D /* com.greenkitty.product */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3A7EA8402C8BA1D40092530D /* com.greenkitty.product in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3A7EA83E2C8BA1D40092530D /* com.greenkitty.product */; };
 		3ABBF9682C3360FF00490E62 /* License.html in Resources */ = {isa = PBXBuildFile; fileRef = 3ABBF9672C3360FF00490E62 /* License.html */; };
 		3ABBF96C2C3364BD00490E62 /* HTMLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABBF96B2C3364BD00490E62 /* HTMLView.swift */; };
 		3AD257962C3AF69400AD6254 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD257952C3AF69400AD6254 /* main.swift */; };

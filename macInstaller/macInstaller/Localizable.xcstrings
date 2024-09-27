@@ -38,6 +38,16 @@
     "All users" : {
 
     },
+    "ALL_USERS_CAN_USE" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Click Install to perform a standard installation of this software for all users of this computer. All users of this computer will be able to use this software."
+          }
+        }
+      }
+    },
     "BACK" : {
       "localizations" : {
         "en" : {
@@ -90,6 +100,16 @@
         }
       }
     },
+    "CURRENT_USER_CAN_USE" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Click Install to perform a standard installation in your home folder. Only the current user of this computer will be able to use this software."
+          }
+        }
+      }
+    },
     "DESCRIPTION" : {
       "localizations" : {
         "en" : {
@@ -110,8 +130,16 @@
         }
       }
     },
-    "How do you want to install this software?" : {
-
+    "HOW_TO_INSTALL" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How do you want to install this software?"
+          }
+        }
+      }
     },
     "INSTALL_FAILED" : {
       "localizations" : {
@@ -123,12 +151,42 @@
         }
       }
     },
+    "INSTALL_FOR_ALL_USERS" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You have chosen to install this software for all users of this computer."
+          }
+        }
+      }
+    },
+    "INSTALL_FOR_CURRENT_USER" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You have chosen to install this software in your home folder.\n\nOnly the current user will be able to use this software."
+          }
+        }
+      }
+    },
     "INSTALL_ROLLBACK" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "The installation failed. The version previously installed has been restored."
+          }
+        }
+      }
+    },
+    "INSTALL_SIZE %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Installing this software requires %lld bytes of disk space"
           }
         }
       }
@@ -164,9 +222,6 @@
         }
       }
     },
-    "Installing this software requires %lld bytes of disk space" : {
-
-    },
     "INTRODUCTION" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -198,9 +253,6 @@
           }
         }
       }
-    },
-    "Only the current user will be able to use this software" : {
-
     },
     "Only the logged-in user" : {
 
@@ -342,12 +394,6 @@
           }
         }
       }
-    },
-    "You have chosen to install this software for all users of this computer" : {
-
-    },
-    "You have chosen to install this software in your home folder" : {
-
     }
   },
   "version" : "1.0"

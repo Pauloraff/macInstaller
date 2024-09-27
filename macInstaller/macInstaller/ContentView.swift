@@ -248,7 +248,7 @@ struct InstallerScopeChoiceView: View {
                                                 for file in specificFiles {
                                                     if let dest = file["Filename"] {
                                                         // add size of file in Resources to payloadSize
-                                                        let fileURL = payloadFolderURL.appending(component: dest)
+                                                        let fileURL = payloadFolderURL.appending(component: key).appending(component: dest)
                                                         
                                                         if FileManager.default.fileExists(atPath: fileURL.path) {
                                                             do {
@@ -496,7 +496,7 @@ struct ContentView: View {
                 }
                 if model.step == .scopeSelection {
                     VStack(alignment: .leading) {
-                        Text("How do you want to install this software?").padding(.leading, 10.0).padding(.trailing, 10.0).padding(.top, 20.0).padding(.bottom, 20.0)
+                        Text("HOW_TO_INSTALL").padding(.leading, 10.0).padding(.trailing, 10.0).padding(.top, 20.0).padding(.bottom, 20.0)
                         Divider()
                         // selection: $singleSelection
                         List(selection: $singleSelection) {
@@ -523,17 +523,19 @@ struct ContentView: View {
                         Spacer()
 
                         // Installing this software requires XXX of disk space"
-                        Text("Installing this software requires \(model.selectedChoice.installSize) bytes of disk space")
+                        let installSize: Int64 = model.selectedChoice.installSize
+                        Text("INSTALL_SIZE \(installSize)")
                         Text("")
                         switch model.selectedChoice.choice {
                             case .allUsers:
-                                Text("You have chosen to install this software for all users of this computer")
+                                Text("INSTALL_FOR_ALL_USERS")
+                                // "You have chosen to install this software for all users of this computer"
                                 Text("")
-                                Text("Only the current user will be able to use this software")
                             case .user:
-                                Text("You have chosen to install this software in your home folder")
+                                Text("INSTALL_FOR_CURRENT_USER")
+                                //"You have chosen to install this software in your home folder")
+                                // "Only the current user will be able to use this software"
                                 Text("")
-                                Text("Only the current user will be able to use this software")
                         }
                     }.frame(maxWidth: 500.0)
                         .padding(.leading, 10.0)
@@ -542,6 +544,23 @@ struct ContentView: View {
                 }
                 if model.step == .scopeDescription {
                     VStack(alignment: .leading) {
+                        let installSize: Int64 = model.selectedChoice.installSize
+                        Text("INSTALL_SIZE \(installSize)")
+                        Text("")
+                        switch model.selectedChoice.choice {
+                            case .allUsers:
+                               Text("ALL_USERS_CAN_USE")
+                               Text("")
+                            case .user:
+                                Text("CURRENT_USER_CAN_USE")
+                                Text("")
+                        }
+                        // Click Install to perform a standard installation in your home folder. Only the current user of this computer will be able to use this software.
+
+                        // This will take xxx of space on your computer.
+                        //
+                        // Click Install to perform a standard installation of this software for all users of this computer. All users of this computer will be able to use this software.
+
                         Spacer()
                     }.frame(maxWidth: 500.0)
                         .padding(.leading, 10.0)

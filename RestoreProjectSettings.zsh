@@ -60,11 +60,11 @@ rm temp5.out
 rm macInstaller/macInstaller.xcodeproj/project.pbxproj
 mv temp6.out macInstaller/macInstaller.xcodeproj/project.pbxproj
 
-# macInstaller/Resources/PayloadMetadata.plist
-sed "s/$HELPERNAME/HELPERNAME/g" macInstaller/Resources/PayloadMetadata.plist > temp.out
-mv temp.out macInstaller/Resources/PayloadMetadata.plist
-sed "s/$COMPANYNAME/COMPANYNAME/g" macInstaller/Resources/PayloadMetadata.plist > temp.out
-mv temp.out macInstaller/Resources/PayloadMetadata.plist
+# macInstaller/Payload/PayloadMetadata.plist
+sed "s/$HELPERNAME/HELPERNAME/g" macInstaller/Payload/PayloadMetadata.plist > temp.out
+mv temp.out macInstaller/Payload/PayloadMetadata.plist
+sed "s/$COMPANYNAME/COMPANYNAME/g" macInstaller/Payload/PayloadMetadata.plist > temp.out
+mv temp.out macInstaller/Payload/PayloadMetadata.plist
 
 # macInstaller/macInstaller/Info.plist:
 # key 'HELPERNAME'
