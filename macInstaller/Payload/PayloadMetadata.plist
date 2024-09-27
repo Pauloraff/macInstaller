@@ -4,28 +4,60 @@
 <dict>
 	<key>BundleID</key>
 	<string>com.greenkitty.product</string>
-	<key>Files</key>
-	<array>
+	<key>Payloads</key>
+	<dict>
+		<key>AllUsers</key>
 		<dict>
-			<key>Destination</key>
-			<string>/Library/LaunchDaemons/</string>
-			<key>Filename</key>
-			<string>com.greenkitty.product.plist</string>
-			<key>OwnerGroup</key>
-			<string>root:wheel</string>
-			<key>Permissions</key>
-			<string>-rw-r--r--</string>
+			<key>Files</key>
+			<array>
+				<dict>
+					<key>Destination</key>
+					<string>/Library/LaunchDaemons/</string>
+					<key>Filename</key>
+					<string>com.greenkitty.product.plist</string>
+					<key>OwnerGroup</key>
+					<string>root:wheel</string>
+					<key>Permissions</key>
+					<string>-rw-r--r--</string>
+				</dict>
+				<dict>
+					<key>Destination</key>
+					<string>/Library/PrivilegedHelperTools/</string>
+					<key>Filename</key>
+					<string>com.greenkitty.product</string>
+					<key>OwnerGroup</key>
+					<string>root:wheel</string>
+					<key>Permissions</key>
+					<string>-r-xr--r--</string>
+				</dict>
+			</array>
 		</dict>
+		<key>User</key>
 		<dict>
-			<key>Destination</key>
-			<string>/Library/PrivilegedHelperTools/</string>
-			<key>Filename</key>
-			<string>com.greenkitty.product</string>
-			<key>OwnerGroup</key>
-			<string>root:wheel</string>
-			<key>Permissions</key>
-			<string>-r-xr--r--</string>
+			<key>Files</key>
+			<array>
+				<dict>
+					<key>Destination</key>
+					<string>/Library/LaunchAgents/</string>
+					<key>Filename</key>
+					<string>com.greenkitty.product.plist</string>
+					<key>OwnerGroup</key>
+					<string>root:wheel</string>
+					<key>Permissions</key>
+					<string>-rw-r--r--</string>
+				</dict>
+				<dict>
+					<key>Destination</key>
+					<string>/Library/Application Support/com.greenkitty.product/</string>
+					<key>Filename</key>
+					<string>com.greenkitty.product</string>
+					<key>OwnerGroup</key>
+					<string>root:wheel</string>
+					<key>Permissions</key>
+					<string>-r-xr--r--</string>
+				</dict>
+			</array>
 		</dict>
-	</array>
+	</dict>
 </dict>
 </plist>

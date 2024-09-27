@@ -1,10 +1,34 @@
 # mac_installer
-A sample macOS installer that installs a system service and a user service.
+A sample macOS installer that installs a service - the example code installs a system
+service.
 
 System services (daemons) are started when the OS starts, and are running independently of
 whether a user is logged in to the computer or not. They can run with elevated (root)
 privileges, and do not have access to a window manager or UI (i.e., no desktop and no
-windows). They are installed into /Library/LaunchDaemons.
+windows). They are usually installed into /Library/LaunchDaemons, but the example code
+installs the service into /Library/PrivilegedHelperTools just to show that it can be done.
+
+In order to customize this project for your own needs, the installer app itself needs to
+be built with your own bundle ID and the system service it uses during installation also
+needs to have its bundle ID changed to one that you own. That's what AdjustProjectSettings.zsh
+does - it will update the Xcode project and the source tree with the new bundle IDs.
+Once you run AdjustProjectSettings.zsh, you should check in the updated sources.
+
+All of the files in Payload/ are meant to be replaced.
+
+The installer needs to have everything it installs under the 'Payload' folder. The metadata
+describing the files to install is in Payload/PayloadMetedata.plist, and SetupPayloadMetadata.zsh
+will fill Payload/PayloadMetedata.plist with the needed information.
+You should only need to run this whenever the files to install change.
+
+The example payload is a small system service that writes out the date and name of the
+currently logged-in user to /var/log/product.log.
+If you build the installer and run it, then log out (but not shut down), when you log back in
+/var/log/product.log will have been updated to show that no-one was logged in. This
+demonstrates that the service was still running even when the login window was being shown
+and no one was logged in.
+
+# Implementation
 
 User services (agents) can be launched when a user is logged in, and have access to the
 UI that each specific user sees. If multiple users are logged in at the same time,
