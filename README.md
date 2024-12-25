@@ -1,23 +1,21 @@
 # mac_installer
 
-What this project is
---------------------
+About this project
+------------------
 
-This project is an installer for macOS X. It can be customized to install a software
-payload containing your software (app, system service, configuration files, etc.).
-
-The installer, once built, does not need to be distributed via Apple's App Store, but
-can be downloaded and run by the end user from a web site (for instance).
+This project builds an installer for macOS. 
+The resulting installer can be distributed outside Apple's App Store.
 
 Adapting the installer for your own use
 ---------------------------------------
 
-In order to customize this project for your own needs, the installer app itself needs to
-be built with your own bundle ID and the system service it uses during installation also
-needs to have its bundle ID changed to one that you own. 
-The installer needs to be notarized using your developer credentials so that it can
-be distributed outside the App Store.
-AdjustProjectSettings.zsh updates the Xcode project and the source tree with the new
+In order to customize this project for your own needs
+- the payload needs to be updated to include the software you want to install
+- the installer app itself needs to be built with your own bundle ID (_com.yourdomain.yourappname_)
+- the helper service it uses during installation also needs to have its bundle ID changed to one that you own. Usually, this is the app's bundle ID with 'helper' appended to it, e.g., _com.yourdomain.yourappnamehelper_
+- in order for the installer to be distributed outside the App Store, it needs to be notarized using your developer credentials. If this step is skipped, the installer will appear to build, but running it will bring up a message saying that it could not be checked for malicious software; depending on the version of macOS, it might be blocked from running.
+
+**AdjustProjectSettings.zsh** updates the Xcode project and the source tree with the new
 bundle IDs and adds your developer credentials to the notarization step.
 Once you run AdjustProjectSettings.zsh, you should check in the updated sources.
 You only need to perform this step once.
@@ -27,12 +25,11 @@ password' that is stored in the keychain of your build machine and used to perfo
 step. If you have already done this for some other project, you do not need to repeat this step.
 
 The next step is to replace the sample software payload with the software you want installed.
-The installer will only install files if they are in the Payload/ directory, and you should completely replace
+The installer will only install files if they are in the Payload/ directory, and you should replace
 everything in Payload/ with your own software.
 
-A special file used by the installer to tell it what the files in Payload/ are is Payload/PayloadMetadata.plist.
-PayloadMetadata.plist can be created by hand, but there is a script which will generate it from scratch which you
-can customize to describe your specific payload: SetupPayloadMetadata.zsh.
+The file **Payload/PayloadMetadata.plist** is used by the installer to tell it what the files in Payload/ are and how they are to be handled. There is a script which will generate it from scratch which you
+should customize to describe your specific payload: **SetupPayloadMetadata.zsh**.
 
 The example payload is a small system service that writes out the date and name of the
 currently logged-in user to /var/log/product.log.
@@ -55,13 +52,13 @@ destination with the correct permissions and that its owner and group match.
 Depending on what is being installed, the owner:group and permissions may need to be exactly what the
 OS expects. Services will not launch if they have the wrong owner/permission settings, for instance.
  
-System services (daemons) are started when the OS starts, and are running independently of
+**System services** (daemons) are started when the OS starts, and are running independently of
 whether a user is logged in to the computer or not. They can run with elevated (root)
 privileges, and do not have access to a window manager or UI (i.e., no desktop and no
 windows). They are usually installed into /Library/LaunchDaemons, but the example code
 installs the service into /Library/PrivilegedHelperTools just to show that it can be done.
 
-User services (agents) can be launched when a user is logged in, and have access to the
+**User services** (agents) can be launched when a user is logged in, and have access to the
 UI that each specific user sees. If multiple users are logged in at the same time,
 there each user can run their own separate copy of the user service if it is installed
 into ~/Library/LaunchAgents, or they can share a single copy if it is installed into
@@ -77,7 +74,6 @@ Configuration/support files are simply copied to their destination folder when t
 
 # Implementation
 
-
 The installer uses a system 'helper' daemon at run time to perform actions which
 require elevated privileges. The helper daemon is embedded within the installer app,
 and macOS takes care of prompting the user for admin credentials before allowing the
@@ -85,7 +81,9 @@ helper daemon to be run and invoked.
 
 [Installer UI] (runs as user)
 (handles user interaction)
+
 invokes
+
 [helper service] (runs as root)
 (handles actions requiring root access)
   
