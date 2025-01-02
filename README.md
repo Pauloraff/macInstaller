@@ -6,6 +6,45 @@ About this project
 This project builds an installer for macOS. 
 The resulting installer can be distributed outside Apple's App Store.
 
+Overview
+--------
+
+The **installer** contains a **payload**, which consists of a set of files (typically, executables and their associate preferences and configuration files) together with **metadata** telling the installer what the files are and the locations they should be copied to when the installer is run.
+
+The installer itself consists of two parts, the **installer app** that provides the UI that the user sees and a **helper service** that runs as root and is used to unpack, install and set owner and permissions on the files being installed. The installer app itself must be **signed** and **notarized** so that it can be distributed outside of Apple's App Store.
+
+The executables in the payload may need to have specific owner/group/permission settings in order to be run successfully once installed. The helper service checks for these settings whenever it works with the files in the payload. For more detils, see https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/Introduction.html
+
+The excutables in the payload will need to be signed and notarized as well.
+
+```mermaid
+flowchart TB
+    subgraph UsersComputer [End user's computer]
+       InstalledExecutables("program")
+       InstalledConfiguration("configuration")
+    end
+    subgraph SoftwareRuns [Program runs on end users computer]
+    end
+    subgraph InstallerPostRun [Program/configuration installed on end users computer]
+    end
+    subgraph InstallerRunTime [End user's computer]
+       subgraph RuntimePayload [Payload in installer]
+         RuntimeExecutables("program")
+         RuntimeConfiguration("configuration")
+       end
+    end
+    subgraph InstallerBuildTime [Installer on your computer]
+       subgraph BuiltPayload [Payload in installer]
+         BuiltExecutables("program")
+         BuiltConfiguration("configuration")
+       end
+    end
+    RuntimeExecutables-->InstalledExecutables
+    InstallerBuildTime-- copied or downloaded to user's computer ---InstallerRunTime
+    InstallerRunTime-- user runs the installer ---InstallerPostRun
+    InstallerPostRun-- installer, OS or user runs installed program ---SoftwareRuns
+```
+
 Adapting the installer for your own use
 ---------------------------------------
 
