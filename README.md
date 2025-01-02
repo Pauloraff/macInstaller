@@ -19,27 +19,40 @@ The excutables in the payload will need to be signed and notarized as well.
 
 ```mermaid
 flowchart TB
+    classDef Computer fill:#f96
     subgraph UsersComputer [End user's computer]
+       style UsersComputer fill:#fb5,stroke:#333,stroke-width:2px
        InstalledExecutables("program")
+       style InstalledExecutables fill:#ccf,stroke:#333,stroke-width:2px
        InstalledConfiguration("configuration")
+       style InstalledConfiguration fill:#ccf,stroke:#333,stroke-width:2px
     end
     subgraph SoftwareRuns [Program runs on end users computer]
     end
     subgraph InstallerPostRun [Program/configuration installed on end users computer]
     end
     subgraph InstallerRunTime [End user's computer]
+       style InstallerRunTime fill:#fb5,stroke:#333,stroke-width:2px
        subgraph RuntimePayload [Payload in installer]
+         style RuntimePayload fill:#ffa,stroke:#000,stroke-width:4px
          RuntimeExecutables("program")
+         style RuntimeExecutables fill:#ccf,stroke:#333,stroke-width:2px
          RuntimeConfiguration("configuration")
+         style RuntimeConfiguration fill:#ccf,stroke:#333,stroke-width:2px
        end
     end
     subgraph InstallerBuildTime [Installer on your computer]
+       style InstallerBuildTime fill:#bf5,stroke:#333,stroke-width:2px
        subgraph BuiltPayload [Payload in installer]
+         style BuiltPayload fill:#ffa,stroke:#000,stroke-width:4px
          BuiltExecutables("program")
+         style BuiltExecutables fill:#ccf,stroke:#333,stroke-width:2px
          BuiltConfiguration("configuration")
+         style BuiltConfiguration fill:#ccf,stroke:#333,stroke-width:2px
        end
     end
     RuntimeExecutables-->InstalledExecutables
+    RuntimeConfiguration-->InstalledConfiguration
     InstallerBuildTime-- copied or downloaded to user's computer ---InstallerRunTime
     InstallerRunTime-- user runs the installer ---InstallerPostRun
     InstallerPostRun-- installer, OS or user runs installed program ---SoftwareRuns
