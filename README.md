@@ -5,6 +5,11 @@ About this project
 
 This project builds an installer for macOS. 
 The resulting installer can be distributed outside Apple's App Store.
+It can install system-level services and their associated configuration files.
+
+When the installer is copied onto the setination computer and run, the user will be asked to provide administrator credentials so that the installer can run with full access, which it needs in order to copy files to system directories and install services.
+
+Other scenarios, such as installing user-level services and applications, are planned but not fully supported yet.
 
 Overview
 --------
@@ -13,29 +18,29 @@ The **installer** contains a **payload**, which consists of a set of files (typi
 
 The installer itself consists of two parts, the **installer app** that provides the UI that the user sees and a **helper service** that runs as root and is used to unpack, install and set owner and permissions on the files being installed. The installer app itself must be **signed** and **notarized** so that it can be distributed outside of Apple's App Store.
 
-The executables in the payload may need to have specific owner/group/permission settings in order to be run successfully once installed. The helper service checks for these settings whenever it works with the files in the payload. For more detils, see https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/Introduction.html
+The **services** in the payload will need to have specific owner/group/permission settings in order to be run successfully once installed. The helper service checks for these settings whenever it works with the files in the payload. For more details, see https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/Introduction.html
 
-The excutables in the payload will need to be signed and notarized as well.
+The services in the payload will need to be signed and notarized as well.
 
 ```mermaid
 flowchart TB
     classDef Computer fill:#f96
     subgraph UsersComputer [End user's computer]
        style UsersComputer fill:#fb5,stroke:#333,stroke-width:2px
-       InstalledExecutables("program")
+       InstalledExecutables("service")
        style InstalledExecutables fill:#ccf,stroke:#333,stroke-width:2px
        InstalledConfiguration("configuration")
        style InstalledConfiguration fill:#ccf,stroke:#333,stroke-width:2px
     end
-    subgraph SoftwareRuns [Program runs on end users computer]
+    subgraph SoftwareRuns [Service runs on end users computer]
     end
-    subgraph InstallerPostRun [Program/configuration installed on end users computer]
+    subgraph InstallerPostRun [Service/configuration installed on end users computer]
     end
     subgraph InstallerRunTime [End user's computer]
        style InstallerRunTime fill:#fb5,stroke:#333,stroke-width:2px
        subgraph RuntimePayload [Payload in installer]
          style RuntimePayload fill:#ffa,stroke:#000,stroke-width:4px
-         RuntimeExecutables("program")
+         RuntimeExecutables("service")
          style RuntimeExecutables fill:#ccf,stroke:#333,stroke-width:2px
          RuntimeConfiguration("configuration")
          style RuntimeConfiguration fill:#ccf,stroke:#333,stroke-width:2px
@@ -45,7 +50,7 @@ flowchart TB
        style InstallerBuildTime fill:#bf5,stroke:#333,stroke-width:2px
        subgraph BuiltPayload [Payload in installer]
          style BuiltPayload fill:#ffa,stroke:#000,stroke-width:4px
-         BuiltExecutables("program")
+         BuiltExecutables("service")
          style BuiltExecutables fill:#ccf,stroke:#333,stroke-width:2px
          BuiltConfiguration("configuration")
          style BuiltConfiguration fill:#ccf,stroke:#333,stroke-width:2px
@@ -55,7 +60,7 @@ flowchart TB
     RuntimeConfiguration-->InstalledConfiguration
     InstallerBuildTime-- copied or downloaded to user's computer ---InstallerRunTime
     InstallerRunTime-- user runs the installer ---InstallerPostRun
-    InstallerPostRun-- installer, OS or user runs installed program ---SoftwareRuns
+    InstallerPostRun-- installer, OS or user runs installed service ---SoftwareRuns
 ```
 
 Adapting the installer for your own use
@@ -67,14 +72,15 @@ In order to customize this project for your own needs
 - the helper service it uses during installation also needs to have its bundle ID changed to one that you own. Usually, this is the app's bundle ID with 'helper' appended to it, e.g., _com.yourdomain.yourappnamehelper_
 - in order for the installer to be distributed outside the App Store, it needs to be notarized using your developer credentials. If this step is skipped, the installer will appear to build, but running it will bring up a message saying that it could not be checked for malicious software; depending on the version of macOS, it might be blocked from running.
 
-**AdjustProjectSettings.zsh** updates the Xcode project and the source tree with the new
-bundle IDs and adds your developer credentials to the notarization step.
+**AdjustProjectSettings.zsh** updates the Xcode project and the source tree with your
+bundle IDs for the installer application and the helper service and adds your developer credentials to the notarization step.
 Once you run AdjustProjectSettings.zsh, you should check in the updated sources.
 You only need to perform this step once.
 
 In order to support notarization, you will need to use your Apple ID to create an 'app-specific
 password' that is stored in the keychain of your build machine and used to perform the notarization
 step. If you have already done this for some other project, you do not need to repeat this step.
+See https://support.apple.com/en-us/102654 for details on how to set this up.
 
 The next step is to replace the sample software payload with the software you want installed.
 The installer will only install files if they are in the Payload/ directory, and you should replace
@@ -94,7 +100,7 @@ and no one was logged in.
 
 - System services
 - Per-user services
-- Applications
+- (Coming soon) Applications
 - Configuration/support files
 
 Every file installed by the installer has an intended owner:group and set of permissions specified
@@ -116,13 +122,13 @@ there each user can run their own separate copy of the user service if it is ins
 into ~/Library/LaunchAgents, or they can share a single copy if it is installed into
 /Library/LaunchAgents.
 
-Applications (.app) files are folders with a well-defined structure. To include an app
+Configuration/support files are simply copied to their destination folder when the installer is run.
+
+(Work in progress) Applications (.app) files are folders with a well-defined structure. To include an app
 folder in the installer's payload, copy the app to the Payload/ directory.
 
-The .app folder can also be archived and the installer will unarchive it during installation.
+(Work in progress) The .app folder can also be archived and the installer will unarchive it during installation.
 This is to reduce the size of the final installer.
-
-Configuration/support files are simply copied to their destination folder when the installer is run.
 
 # Implementation
 
