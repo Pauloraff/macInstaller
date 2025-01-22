@@ -11,7 +11,14 @@ import WebKit
 enum InstallerStep: Int, CaseIterable {
     case introduction
     case license
-    case awaitingLicenseAcceptance
+    case awaitingLicenseAcceptance // this is hidden in the UI, and corresponds to a modal dialog.
+    
+    // put your custom installer steps below this line
+
+    // User credentials, login, etc. etc.
+
+    // put your custom installer steps above this line
+
     case scopeSelection
     case scopeDescription
     case installation
@@ -23,8 +30,15 @@ enum InstallerStep: Int, CaseIterable {
                 return "INTRODUCTION"
             case .license:
                 return "READ_LICENSE"
-            case .awaitingLicenseAcceptance:
-                return "ACCEPT_LICENSE"
+            case .awaitingLicenseAcceptance: // hidden in the UI
+                return "ACCEPT_LICENSE"      // never visible in the UI
+                
+            // put your custom installer step labels below this line
+            
+            // User credentials, login, etc. etc.
+                
+            // put your custom installer step labels above this line
+
             case .scopeSelection:
                 return "SCOPE_SELECT"
             case .scopeDescription:
@@ -297,7 +311,12 @@ struct InstallerScopeChoiceView: View {
         }
         step = .summary
     }
-    
+
+    private func stepIsNotRelevant() -> Bool {
+        // we skip over scope_select if there's only one scope available
+        step == .scopeSelection && choices.count <= 1
+    }
+        
     func gotoNext() {
         // test preconditions
         // -> license: always succeeds
@@ -306,8 +325,8 @@ struct InstallerScopeChoiceView: View {
         // - if the user cancels, then the summary
         if let next = InstallerStep(rawValue:(step.rawValue + 1)) {
             step = next
-            // we skip over scope_select if there's only one scope available
-            if step == .scopeSelection && choices.count <= 1 {
+
+            if stepIsNotRelevant() {
                 if let next = InstallerStep(rawValue:(step.rawValue + 1)) {
                     step = next
                 }
@@ -321,8 +340,8 @@ struct InstallerScopeChoiceView: View {
     func gotoPrev() {
         if let prev = InstallerStep(rawValue:(step.rawValue - 1)) {
             step = prev
-            
-            if step == .scopeSelection && choices.count <= 1 {
+ 
+            if stepIsNotRelevant() {
                 if let prev = InstallerStep(rawValue:(step.rawValue - 1)) {
                     step = prev
                 }
@@ -376,11 +395,19 @@ struct ContentView: View {
     @State var model: InstallerState = InstallerState(step: .introduction)
 
     func continueButtonClicked() {
-        model.gotoNext()
+        if model.step == .license {
+            showModal = true
+        } else {
+            model.gotoNext()
+        }
     }
-    
+  
+    // .scopeSelection
     func backButtonClicked() {
         model.gotoPrev()
+        if model.step == .awaitingLicenseAcceptance {
+            model.gotoPrev()
+        }
     }
     
     func printButtonClicked() {
@@ -443,6 +470,8 @@ struct ContentView: View {
 
     @State var singleSelection: InstallerScopeChoice.ID?
 
+    @State private var showModal = false
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             // Top section: Title
@@ -458,12 +487,13 @@ struct ContentView: View {
             HStack() {
                 VStack(alignment: .leading) {
                     if model.choices.count <= 1 {
-                        let allExcept = InstallerStep.allCases.filter { step in step != InstallerStep.scopeSelection }
+                        let allExcept = InstallerStep.allCases.filter { step in (step != InstallerStep.scopeSelection) && (step != .awaitingLicenseAcceptance) }
                         ForEach(allExcept, id: \.self) { step in
                             InstallerStepView(current: model.step, myself: step)
                         }
                     } else {
-                        ForEach(InstallerStep.allCases, id: \.self) { step in
+                        let allExceptAwaiting = InstallerStep.allCases.filter { step in (step != .awaitingLicenseAcceptance) }
+                        ForEach(allExceptAwaiting, id: \.self) { step in
                             InstallerStepView(current: model.step, myself: step)
                         }
                     }
@@ -491,9 +521,7 @@ struct ContentView: View {
                         .border(Color.gray, width: /*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/)
                         .background(Color.white)
                 }
-                if model.step == .awaitingLicenseAcceptance {
-                    AcceptanceView().environment(model)
-                }
+                
                 if model.step == .scopeSelection {
                     VStack(alignment: .leading) {
                         Text("HOW_TO_INSTALL").padding(.leading, 10.0).padding(.trailing, 10.0).padding(.top, 20.0).padding(.bottom, 20.0)
@@ -645,30 +673,24 @@ struct ContentView: View {
                 client.start()
             }
         })
-    }
-}
-
-struct AcceptanceView: View {
-    @Environment(InstallerState.self) private var model
-    
-    var body: some View {
-        VStack {
-            Text("ACCEPT_TEXT")
-            Spacer()
-            HStack {
-                Button("REJECT") {
-                    model.successful = false
-                    model.licenseAccepted = false
-                    model.step = .summary
-                }
-                Button("ACCEPT") {
-                    model.successful = true
-                    model.licenseAccepted = true
-                    model.step = model.choices.count <= 1 ? .scopeDescription : .scopeSelection
-                }
-            }
-
-        }
+        .alert(isPresented: $showModal) {
+            Alert(
+                            title: Text(""),
+                            message: Text("ACCEPT_TEXT"),
+                            primaryButton: Alert.Button.default(Text("REJECT"), action: {
+                                model.successful = false
+                                model.licenseAccepted = false
+                                model.step = .summary
+                                showModal = false
+                            }),
+                            secondaryButton: Alert.Button.destructive(Text("ACCEPT"), action: {
+                                model.successful = true
+                                model.licenseAccepted = true
+                                model.step = model.choices.count <= 1 ? .scopeDescription : .scopeSelection
+                                showModal = false
+                            })
+                        )
+                    }
     }
 }
 
