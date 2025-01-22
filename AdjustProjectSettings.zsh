@@ -125,5 +125,6 @@ mv "macInstaller/HELPERNAME/HELPERNAME-Bridging-Header.h" "macInstaller/HELPERNA
 
 # subfolder named HELPERNAME/
 echo "Copying macInstaller/HELPERNAME directory to macInstaller/$HELPERNAME"
-mv "macInstaller/HELPERNAME/" "macInstaller/$HELPERNAME/" 
+rm -rf "macInstaller/$HELPERNAME/"
+mv "macInstaller/HELPERNAME/" "macInstaller/$HELPERNAME/"
 
