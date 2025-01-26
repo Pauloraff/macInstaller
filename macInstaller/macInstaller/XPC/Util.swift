@@ -2,7 +2,6 @@ import SecurityFoundation
 import ServiceManagement
 
 struct Util {
-    
     static func askAuthorization() -> AuthorizationRef? {
         var auth: AuthorizationRef?
         let status: OSStatus = AuthorizationCreate(nil, nil, [], &auth)
@@ -25,5 +24,14 @@ struct Util {
         }
         
         return blessStatus
+    }
+}
+
+func bundleURL(fileName: String, fileExtension: String) -> URL? {
+    if let fileURL = Bundle.main.url(forResource: fileName, withExtension: fileExtension) {
+        return fileURL
+    } else {
+        print("File not found")
+        return nil
     }
 }

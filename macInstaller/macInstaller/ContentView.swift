@@ -8,392 +8,14 @@
 import SwiftUI
 import WebKit
 
-enum InstallerStep: Int, CaseIterable {
-    case introduction
-    case license
-    case awaitingLicenseAcceptance // this is hidden in the UI, and corresponds to a modal dialog.
-    
-    // put your custom installer steps below this line
-
-    // User credentials, login, etc. etc.
-
-    // put your custom installer steps above this line
-
-    case scopeSelection
-    case scopeDescription
-    case installation
-    case summary
-    
-    func getLabel() -> String {
-        switch self {
-            case .introduction:
-                return "INTRODUCTION"
-            case .license:
-                return "READ_LICENSE"
-            case .awaitingLicenseAcceptance: // hidden in the UI
-                return "ACCEPT_LICENSE"      // never visible in the UI
-                
-            // put your custom installer step labels below this line
-            
-            // User credentials, login, etc. etc.
-                
-            // put your custom installer step labels above this line
-
-            case .scopeSelection:
-                return "SCOPE_SELECT"
-            case .scopeDescription:
-                return "SCOPE_DESCRIBE"
-            case .installation:
-                return "INSTALLATION"
-            case .summary:
-                return "SUMMARY"
-        }
-    }
-}
-
-enum InstallerSummary {
-    case licenseRejected
-    case installationSucceeded
-    case failed
-    case failedWithRollback
-}
-
-struct InstallerStepView: View {
-    var current = InstallerStep.introduction
-    var myself = InstallerStep.installation
-
-    init(current: InstallerStep, myself: InstallerStep) {
-        self.current = current
-        self.myself = myself
-    }
-
-    var done = AttributedString("●  ",
-                                attributes: AttributeContainer().foregroundColor(Color(red:0, green:0, blue:0)))
-    var running = AttributedString("●  ",
-                                   attributes: AttributeContainer().foregroundColor(Color(red:0.7, green:0, blue:0.7)))
-    var notyet = AttributedString("●  ",
-                                attributes: AttributeContainer().foregroundColor(Color(red:0, green:0, blue:0)))
-
-    var body: some View {
-        HStack(spacing: 0) {
-            if current.rawValue < myself.rawValue {
-                Text(notyet).bold()
-            } else if current.rawValue == myself.rawValue {
-                Text(running).bold()
-            } else {
-                Text(done).bold()
-            }
-            Text(LocalizedStringKey(myself.getLabel())).bold().fontWeight(.semibold).padding(.bottom, 2.0)
-        }
-    }
-}
-
-let InstallerTaskNames = [
-    "NO MATCH",
-    "STOP_SERVICE" ,
-    "COPY_NEW_SERVICE",
-    "START_SERVICE",
-    "CLEAN_UP_FILES"
-]
-
-enum InstallerTask: Int {
-    case stopService = 1 // "STOP_SERVICE"               // detect whether the daemon is running (update install) or not (fresh install) and stop it if it is running.
-    // stopService == 'sudo launctl unload <service identifier>
-    case copyNewService = 2 // "COPY_NEW_SERVICE"   // saves a copy of any files changed by the installation,
-    // copies all required files to their destinations,
-    // and if there is an error, undoes all the copies and leaves the file system
-    // in the same state it was before copyCurrentInstallation ran.
-    case startService = 3 // "START_SERVICE"              // start/restart the installed service.
-    case cleanUpFiles = 4 // "CLEAN_UP_FILES" // remove any files that were part of the previous installation, if any.
-}
-
-enum InstallerTaskState: Int {
-    case pending = 1
-    case running = 2
-    case completed = 3
-    case failed = 4
-    case skipped = 5
-}
-
-struct InstallerTaskModel: Identifiable {
-    let task: InstallerTask
-    let state: InstallerTaskState
-    
-    var id: Int { task.rawValue << 4 | state.rawValue  }
-}
-
-struct InstallerTaskView: View {
-    let stateModel: InstallerTaskModel
-    
-    init(model: InstallerTaskModel) {
-        self.stateModel = model
-    }
-
-    @State private var isRotating = 0.0
-
-    var body: some View {
-        HStack {
-            switch stateModel.state {
-                case .pending:
-                    Image(systemName: "circle.dotted") // "circle.dotted"
-                    Text(LocalizedStringKey(InstallerTaskNames[stateModel.task.rawValue]))
-                    Spacer()
-                case .running:
-                    Image(systemName: "arrow.triangle.2.circlepath").bold().rotationEffect(.degrees(isRotating))
-                        .onAppear {
-                            withAnimation(.linear(duration: 1)
-                                    .speed(0.1).repeatForever(autoreverses: false)) {
-                                isRotating = 360.0
-                            }
-                        }
-                    Text(LocalizedStringKey(InstallerTaskNames[stateModel.task.rawValue])).bold()
-                    Spacer()
-                case .skipped:
-                    Image(systemName: "minus.circle").foregroundStyle(.gray)
-                    Text(LocalizedStringKey(InstallerTaskNames[stateModel.task.rawValue])).foregroundStyle(.gray)
-                    Spacer()
-                case .completed:
-                    Image(systemName: "checkmark.circle").foregroundStyle(.green)
-                    Text(LocalizedStringKey(InstallerTaskNames[stateModel.task.rawValue])).foregroundStyle(.green)
-                    Spacer()
-                case .failed:
-                    Image(systemName: "exclamationmark.circle").foregroundStyle(.red)
-                    Text(LocalizedStringKey(InstallerTaskNames[stateModel.task.rawValue])).foregroundStyle(.red)
-                    Spacer()
-            }
-                
-        }
-    }
-}
-
-enum InstallerScope: String, Identifiable {
-    case allUsers = "AllUsers"
-    case user = "User"
-    
-    var id: Int { rawValue.hash  }
-}
-
-func bundleURL(fileName: String, fileExtension: String) -> URL? {
-    if let fileURL = Bundle.main.url(forResource: fileName, withExtension: fileExtension) {
-        return fileURL
-    } else {
-        print("File not found")
-        return nil
-    }
-}
-
-struct InstallerScopeChoice: Identifiable {
-    let choice: InstallerScope
-    let installSize: Int64
-    
-    var id: Int { choice.rawValue.hash  }
-}
-
-struct InstallerScopeChoiceView: View {
-    let stateModel: InstallerState
-    let choice: InstallerScopeChoice
-    
-    init(model: InstallerState, choice: InstallerScopeChoice) {
-        self.stateModel = model
-        self.choice = choice
-    }
-
-    var body: some View {
-        HStack {
-            switch self.choice.choice {
-                case .allUsers:
-                    Image(systemName: "desktopcomputer").resizable()
-                        .frame(width: 32.0, height: 32.0)
-                    Text("All users")
-                case .user:
-                    Image(systemName: "person")
-                        .resizable().frame(width: 32.0, height: 32.0)
-                    Text("Only the logged-in user")
-            }
-            Spacer()
-        }.backgroundStyle(self.choice.choice == stateModel.selectedChoice.choice ? .green : .gray)
-    }
-}
-
-@Observable class InstallerState {
-    var step: InstallerStep = .introduction
-    var licenseAccepted = false // user must accept the license
-    var freshInstall = true // If we detect a previous installation, set to false
-    var permissionsGranted = false // Did the user enter admin credentials?
-    var successful = false // This is set to true before the installation tasks are run
-    var summaryMessage = ""
-    var choices: [InstallerScopeChoice] = []
-    var selectedChoice: InstallerScopeChoice
-    
-    var stages: [InstallerTaskModel] = [
-        InstallerTaskModel( task: InstallerTask.stopService, state: InstallerTaskState.pending ),
-        InstallerTaskModel( task: InstallerTask.copyNewService, state: InstallerTaskState.pending ),
-        InstallerTaskModel( task: InstallerTask.startService, state: InstallerTaskState.pending ),
-        InstallerTaskModel( task: InstallerTask.cleanUpFiles, state: InstallerTaskState.pending )
-    ]
-
-    init(step: InstallerStep, licenseAccepted: Bool = false, freshInstall: Bool = true, permissionsGranted: Bool = false, successful: Bool = false, summaryMessage: String = "") {
-        self.step = step
-        self.licenseAccepted = licenseAccepted
-        self.freshInstall = freshInstall
-        self.permissionsGranted = permissionsGranted
-        self.successful = successful
-        self.summaryMessage = summaryMessage
-        
-        self.choices = []
-        self.selectedChoice = InstallerScopeChoice(choice: .allUsers, installSize: 0)
-    
-        // set up the set of installer scenarios. If there is only one, then we don't
-        // present the screen where the user is given a choice.
-        if let manifestURL = bundleURL(fileName: "PayloadMetadata", fileExtension: "plist") {
-            let payloadFolderURL = manifestURL.deletingLastPathComponent()
-            if let data = try? Data(contentsOf: manifestURL) {
-                if let result = try? PropertyListSerialization.propertyList(from: data, options: [], format: nil) {
-                    if let dict = result as? [String:Any] {
-                        if let payloads = dict["Payloads"] as? [String:Any] {
-                            let keys = payloads.keys.map { $0 as String }
-                            for key in keys {
-                                if key == InstallerScope.allUsers.rawValue || key == InstallerScope.user.rawValue {
-                                    if let scope = InstallerScope(rawValue: key) {
-                                        // calculate size of payload
-                                        var payloadSize: Int64 = 0
-                                        if let specificPayload = payloads[key] as? [String:Any] {
-                                            if let specificFiles = specificPayload["Files"] as? [[String:String]] {
-                                                for file in specificFiles {
-                                                    if let dest = file["Filename"] {
-                                                        // add size of file in Resources to payloadSize
-                                                        let fileURL = payloadFolderURL.appending(component: key).appending(component: dest)
-                                                        
-                                                        if FileManager.default.fileExists(atPath: fileURL.path) {
-                                                            do {
-                                                                let attr = try FileManager.default.attributesOfItem(atPath: fileURL.path) as [FileAttributeKey:Any]
-                                                                let fileSize = attr[.size] as! Int64
-                                                                payloadSize += fileSize
-                                                            } catch {
-                                                                
-                                                            }
-                                                        }
-                                                        
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        
-                                        self.choices.append(InstallerScopeChoice(choice: scope, installSize: payloadSize))
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        
-        self.choices.sort(by: { first, second in
-            return first.choice.rawValue == "AllUsers"
-        })
-        if self.choices.count == 1 {
-            self.selectedChoice = self.choices[0]
-        }
-    }
-    
-    func gotoSummary() {
-        if !permissionsGranted {
-            summaryMessage = String(localized:"PERMISSIONS_DECLINED") // user did not grant background service permissions
-        } else if !licenseAccepted {
-            summaryMessage = String(localized:"LICENSE_DECLINED") // user rejected license
-        } else if successful {
-            summaryMessage = String(localized:"INSTALL_SUCCEEDED") // install succeeded
-        } else if freshInstall {
-            summaryMessage = String(localized: "INSTALL_FAILED") // software not installed, not earlier version to fall back on
-        } else {
-            summaryMessage = String(localized: "INSTALL_ROLLBACK") // software not installed, previous version restored
-        }
-        step = .summary
-    }
-
-    private func stepIsNotRelevant() -> Bool {
-        // we skip over scope_select if there's only one scope available
-        step == .scopeSelection && choices.count <= 1
-    }
-        
-    func gotoNext() {
-        // test preconditions
-        // -> license: always succeeds
-        // -> Installation: user must accept license before continuing
-        // The first install action is to prompt for permissions for the helper service
-        // - if the user cancels, then the summary
-        if let next = InstallerStep(rawValue:(step.rawValue + 1)) {
-            step = next
-
-            if stepIsNotRelevant() {
-                if let next = InstallerStep(rawValue:(step.rawValue + 1)) {
-                    step = next
-                }
-            }
-        } else {
-            // we got to the end
-            NSApp.terminate(nil)
-        }
-    }
-
-    func gotoPrev() {
-        if let prev = InstallerStep(rawValue:(step.rawValue - 1)) {
-            step = prev
- 
-            if stepIsNotRelevant() {
-                if let prev = InstallerStep(rawValue:(step.rawValue - 1)) {
-                    step = prev
-                }
-            }
-        }
-    }
-    
-    func begin(what: InstallerTaskModel) {
-        let stepIndex = stages.firstIndex(where: { stage in stage.task == what.task && stage.state == .pending})
-        if let stepIndex = stepIndex {
-            let removed = stages.remove(at: stepIndex)
-            stages.insert(InstallerTaskModel(task: removed.task, state: .running), at: stepIndex)
-        }
-    }
-
-    func handle(result: Bool) {
-        if result {
-            let stepIndex = stages.firstIndex(where: { stage in stage.state == .running})
-
-            if let stepIndex = stepIndex {
-                let removed = stages.remove(at: stepIndex)
-                stages.insert(InstallerTaskModel(task: removed.task, state: .completed), at: stepIndex)
-            }
-        } else {
-            successful = false
-            
-            stages = stages.map { item in
-                if item.state == .running {
-                    return InstallerTaskModel(task: item.task, state: .completed)
-                } else if item.state == .pending {
-                    return InstallerTaskModel(task: item.task, state: .skipped)
-                } else {
-                    return item
-                }
-            }
-        }
-    }
-}
-
-class WebViewData: ObservableObject {
-  @Published var loading: Bool = false
-  @Published var url: URL?;
-
-  init (url: URL) {
-    self.url = url
-  }
-}
+// Needs to be shared with the InstallationView, which does the actual installation
+var client = XPCClient()
 
 struct ContentView: View {
-    var client = XPCClient()
     @State var model: InstallerState = InstallerState(step: .introduction)
-
+    @State var singleSelection: InstallScope = .allUsers
+    @State var showModal: Bool = false
+    
     func continueButtonClicked() {
         if model.step == .license {
             showModal = true
@@ -401,7 +23,7 @@ struct ContentView: View {
             model.gotoNext()
         }
     }
-  
+    
     // .scopeSelection
     func backButtonClicked() {
         model.gotoPrev()
@@ -417,61 +39,8 @@ struct ContentView: View {
     func saveButtonClicked() {
         // Save the license to a file
     }
-        
-    func handleCompletedTask(_ result: Bool) {
-        if result {
-            model.handle(result: result)
 
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                runNextAvailableTask()
-            }
-        } else {
-            model.handle(result: result)
 
-            DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
-                // Tell the model to go to the summary page.
-                model.gotoSummary()
-            }
-        }
-    }
-    
-    func runNextAvailableTask() {
-        // The manifestURL points to the file in the app bundle that is the PayloadMetadata.plist;
-        // all the other files in the payload are in the same directory in the app bundle.
-        if let next = model.stages.first(where: { $0.state == .pending }), let manifestURL = bundleURL(fileName: "PayloadMetadata", fileExtension: "plist") {
-            // we tell the client to perform a task
-            model.begin(what: next)
-            switch next.task {
-                case .stopService:
-                    client.stopService(manifestURL, model.selectedChoice.choice.rawValue) { result in
-                         handleCompletedTask(result)
-                    }
-                case .copyNewService:
-                    // We pass the path of the metadata file to the service
-                    client.copyNewService(manifestURL, model.selectedChoice.choice.rawValue) { result in
-                        handleCompletedTask(result)
-                    }
-                case .startService:
-                    client.startService(manifestURL, model.selectedChoice.choice.rawValue) { result in
-                        handleCompletedTask(result)
-                    }
-                case .cleanUpFiles:
-                    client.cleanupFiles(manifestURL, model.selectedChoice.choice.rawValue) { result in
-                        handleCompletedTask(result)
-                    }
-            }
-        } else {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
-                // Tell the model to go to the summary page.
-                model.gotoSummary()
-            }
-        }
-    }
-
-    @State var singleSelection: InstallerScopeChoice.ID?
-
-    @State private var showModal = false
-    
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             // Top section: Title
@@ -489,148 +58,27 @@ struct ContentView: View {
                     if model.choices.count <= 1 {
                         let allExcept = InstallerStep.allCases.filter { step in (step != InstallerStep.scopeSelection) && (step != .awaitingLicenseAcceptance) }
                         ForEach(allExcept, id: \.self) { step in
-                            InstallerStepView(current: model.step, myself: step)
+                            InstallerStepView(model: model, myself: step)
                         }
                     } else {
                         let allExceptAwaiting = InstallerStep.allCases.filter { step in (step != .awaitingLicenseAcceptance) }
                         ForEach(allExceptAwaiting, id: \.self) { step in
-                            InstallerStepView(current: model.step, myself: step)
+                            InstallerStepView(model: model, myself: step)
                         }
                     }
                     Spacer()
                 }
-                if model.step == .introduction {
-                    VStack(alignment: .leading) {
-                        Text("BRIEF_OVERVIEW")
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        Text("")
-                        Text("DESCRIPTION")
-                        Spacer()
-                    }.frame(maxWidth: 500.0)
-                        .padding(.leading, 10.0)
-                        .border(Color.gray, width: /*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/)
-                        .background(Color.white)
-                }
-                if (model.step == .license) {
-                    // Text view
-                    VStack(alignment: .leading) {
-                        LicenseHTMLView()
-                        Spacer()
-                    }.frame(maxWidth: 500.0)
-                        .padding(.leading, 10.0)
-                        .border(Color.gray, width: /*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/)
-                        .background(Color.white)
-                }
                 
-                if model.step == .scopeSelection {
-                    VStack(alignment: .leading) {
-                        Text("HOW_TO_INSTALL").padding(.leading, 10.0).padding(.trailing, 10.0).padding(.top, 20.0).padding(.bottom, 20.0)
-                        Divider()
-                        // selection: $singleSelection
-                        List(selection: $singleSelection) {
-                            ForEach(model.choices) { choice in
-                                InstallerScopeChoiceView(model: model, choice: choice).padding(.leading, 20.0).padding(.top, 10.0).padding(.bottom, 10.0)
-                            }
-                        }.listRowSeparator(.hidden)
-                            .onAppear(perform: {
-                                for choice in model.choices {
-                                    if choice.choice == InstallerScope(rawValue: "AllUsers") {
-                                        singleSelection = choice.id
-                                    }
-                                }
-                            })
-                            .onChange(of: singleSelection) {
-                            _, beta in
-                            for choice in model.choices {
-                                if choice.id == beta {
-                                    model.selectedChoice = choice
-                                }
-                            }
-                        }
-                        Divider()
-                        Spacer()
-
-                        // Installing this software requires XXX of disk space"
-                        let installSize: Int64 = model.selectedChoice.installSize
-                        Text("INSTALL_SIZE \(installSize)")
-                        Text("")
-                        switch model.selectedChoice.choice {
-                            case .allUsers:
-                                Text("INSTALL_FOR_ALL_USERS")
-                                // "You have chosen to install this software for all users of this computer"
-                                Text("")
-                            case .user:
-                                Text("INSTALL_FOR_CURRENT_USER")
-                                //"You have chosen to install this software in your home folder")
-                                // "Only the current user will be able to use this software"
-                                Text("")
-                        }
-                    }.frame(maxWidth: 500.0)
-                        .padding(.leading, 10.0)
-                        .border(Color.gray, width: /*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/)
-                        .background(Color.white)
-                }
-                if model.step == .scopeDescription {
-                    VStack(alignment: .leading) {
-                        let installSize: Int64 = model.selectedChoice.installSize
-                        Text("INSTALL_SIZE \(installSize)")
-                        Text("")
-                        switch model.selectedChoice.choice {
-                            case .allUsers:
-                               Text("ALL_USERS_CAN_USE")
-                               Text("")
-                            case .user:
-                                Text("CURRENT_USER_CAN_USE")
-                                Text("")
-                        }
-                        // Click Install to perform a standard installation in your home folder. Only the current user of this computer will be able to use this software.
-
-                        // This will take xxx of space on your computer.
-                        //
-                        // Click Install to perform a standard installation of this software for all users of this computer. All users of this computer will be able to use this software.
-
-                        Spacer()
-                    }.frame(maxWidth: 500.0)
-                        .padding(.leading, 10.0)
-                        .border(Color.gray, width: /*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/)
-                        .background(Color.white)
-                }
-                if model.step == .installation {
-                    // List of actions to undertake
-                    // These all require that the helper service have been given permissions
-                    VStack(alignment: .leading) {
-                        ForEach(model.stages) { stage in
-                            InstallerTaskView(model: stage)
-                        }
-                        Spacer()
-                    }.frame(maxWidth: 500.0)
-                        .padding(.leading, 10.0)
-                        .border(Color.gray, width: /*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/)
-                        .background(Color.white)
-                        .onAppear(perform: {
-                            // run the next task
-                            runNextAvailableTask()
-                        })
-                }
-
-                if (model.step == .summary) {
-                     VStack(alignment: .leading) {
-                        if (model.successful) {
-                            Text("SUMMARY_SUCCESS")
-                        } else if (!model.permissionsGranted) {
-                            Text("PERMISSIONS_DECLINED")
-                        } else if (!model.licenseAccepted) {
-                            Text("LICENSE_DECLINED")
-                        } else if (model.freshInstall) {
-                            Text("INSTALL_FAILED")
-                        } else {
-                            Text("INSTALL_ROLLBACK")
-                        }
-                        Spacer()
-                    }.frame(maxWidth: 500.0)
-                        .padding(.leading, 10.0)
-                        .border(Color.gray, width: /*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/)
-                        .background(Color.white)
+                // Note that this leaks views if the user navigates back and forth repeatedly.
+                switch model.step {
+                    case .introduction: IntroductionView().body
+                    case .license: LicenseView().body
+                    case .scopeSelection: ScopeSelectionView(model: $model).body
+                    case .scopeDescription: ScopeDescriptionView(model: $model).body
+                    case .installation: InstallationView(model: $model).body
+                    case .summary: SummaryView(model: $model).body
+                    case .awaitingLicenseAcceptance:
+                        Text("") // placeholder, this view is not shown
                 }
             }
             Text("")
@@ -644,7 +92,7 @@ struct ContentView: View {
                     }
                 }
                 Spacer()
-                if (model.step != .summary && 
+                if (model.step != .summary &&
                     model.step != .installation &&
                     model.step != .awaitingLicenseAcceptance &&
                     model.step != .introduction) {
@@ -675,25 +123,21 @@ struct ContentView: View {
         })
         .alert(isPresented: $showModal) {
             Alert(
-                            title: Text(""),
-                            message: Text("ACCEPT_TEXT"),
-                            primaryButton: Alert.Button.default(Text("REJECT"), action: {
-                                model.successful = false
-                                model.licenseAccepted = false
-                                model.step = .summary
-                                showModal = false
-                            }),
-                            secondaryButton: Alert.Button.destructive(Text("ACCEPT"), action: {
-                                model.successful = true
-                                model.licenseAccepted = true
-                                model.step = model.choices.count <= 1 ? .scopeDescription : .scopeSelection
-                                showModal = false
-                            })
-                        )
-                    }
+                title: Text(""),
+                message: Text("ACCEPT_TEXT"),
+                primaryButton: Alert.Button.default(Text("REJECT"), action: {
+                    model.successful = false
+                    model.licenseAccepted = false
+                    model.step = .summary
+                    showModal = false
+                }),
+                secondaryButton: Alert.Button.destructive(Text("ACCEPT"), action: {
+                    model.successful = true
+                    model.licenseAccepted = true
+                    model.step = model.choices.count <= 1 ? .scopeDescription : .scopeSelection
+                    showModal = false
+                })
+            )
+        }
     }
-}
-
-#Preview {
-    ContentView(model: InstallerState(step: .installation, licenseAccepted: false, freshInstall: true, permissionsGranted: false, successful: false, summaryMessage: ""))
 }
