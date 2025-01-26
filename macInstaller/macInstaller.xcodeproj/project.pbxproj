@@ -7,6 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A2F7E8A2D43161400F95728 /* InstallerStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F7E892D43160D00F95728 /* InstallerStep.swift */; };
+		3A2F7E8C2D43164D00F95728 /* InstallerStepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F7E8B2D43164200F95728 /* InstallerStepView.swift */; };
+		3A2F7E8E2D43169F00F95728 /* InstallerTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F7E8D2D43169F00F95728 /* InstallerTask.swift */; };
+		3A2F7E902D4316D000F95728 /* InstallerTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F7E8F2D4316D000F95728 /* InstallerTaskView.swift */; };
+		3A2F7E922D43170700F95728 /* InstallScope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F7E912D43170700F95728 /* InstallScope.swift */; };
+		3A2F7E942D43171A00F95728 /* InstallScopeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F7E932D43171A00F95728 /* InstallScopeView.swift */; };
+		3A2F7E962D43181B00F95728 /* InstallSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F7E952D43181000F95728 /* InstallSummary.swift */; };
+		3A2F7E9A2D4318CC00F95728 /* InstallerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F7E992D4318CC00F95728 /* InstallerState.swift */; };
+		3A2F7E9C2D4318F500F95728 /* License.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F7E9B2D4318F500F95728 /* License.swift */; };
+		3A2F7E9E2D43196100F95728 /* IntroductionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F7E9D2D43196000F95728 /* IntroductionView.swift */; };
+		3A2F7EA02D431BB800F95728 /* LicenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F7E9F2D431BB800F95728 /* LicenseView.swift */; };
+		3A2F7EA22D431E8500F95728 /* ScopeSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F7EA12D431E7600F95728 /* ScopeSelectionView.swift */; };
+		3A2F7EA42D431F0900F95728 /* ScopeDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F7EA32D431EFB00F95728 /* ScopeDescriptionView.swift */; };
+		3A2F7EA62D431F5100F95728 /* InstallationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F7EA52D431F4A00F95728 /* InstallationView.swift */; };
+		3A2F7EA82D431F7200F95728 /* SummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F7EA72D431F6B00F95728 /* SummaryView.swift */; };
 		3A402E142C73DC50000DE1BC /* PayloadMetadata.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3A402E132C73DC4F000DE1BC /* PayloadMetadata.plist */; };
 		3A7471942C1A3D6F00E559FA /* macInstallerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7471932C1A3D6F00E559FA /* macInstallerApp.swift */; };
 		3A7471962C1A3D6F00E559FA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7471952C1A3D6F00E559FA /* ContentView.swift */; };
@@ -103,6 +118,21 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3A2F7E892D43160D00F95728 /* InstallerStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstallerStep.swift; sourceTree = "<group>"; };
+		3A2F7E8B2D43164200F95728 /* InstallerStepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstallerStepView.swift; sourceTree = "<group>"; };
+		3A2F7E8D2D43169F00F95728 /* InstallerTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstallerTask.swift; sourceTree = "<group>"; };
+		3A2F7E8F2D4316D000F95728 /* InstallerTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstallerTaskView.swift; sourceTree = "<group>"; };
+		3A2F7E912D43170700F95728 /* InstallScope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstallScope.swift; sourceTree = "<group>"; };
+		3A2F7E932D43171A00F95728 /* InstallScopeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstallScopeView.swift; sourceTree = "<group>"; };
+		3A2F7E952D43181000F95728 /* InstallSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstallSummary.swift; sourceTree = "<group>"; };
+		3A2F7E992D4318CC00F95728 /* InstallerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstallerState.swift; sourceTree = "<group>"; };
+		3A2F7E9B2D4318F500F95728 /* License.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = License.swift; sourceTree = "<group>"; };
+		3A2F7E9D2D43196000F95728 /* IntroductionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroductionView.swift; sourceTree = "<group>"; };
+		3A2F7E9F2D431BB800F95728 /* LicenseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicenseView.swift; sourceTree = "<group>"; };
+		3A2F7EA12D431E7600F95728 /* ScopeSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScopeSelectionView.swift; sourceTree = "<group>"; };
+		3A2F7EA32D431EFB00F95728 /* ScopeDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScopeDescriptionView.swift; sourceTree = "<group>"; };
+		3A2F7EA52D431F4A00F95728 /* InstallationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstallationView.swift; sourceTree = "<group>"; };
+		3A2F7EA72D431F6B00F95728 /* SummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryView.swift; sourceTree = "<group>"; };
 		3A3C604B2C447D960068CF65 /* AdjustProjectSettings.zsh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = AdjustProjectSettings.zsh; path = ../AdjustProjectSettings.zsh; sourceTree = "<group>"; };
 		3A402E102C73DB42000DE1BC /* SetupPayloadMetadata.zsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; name = SetupPayloadMetadata.zsh; path = ../SetupPayloadMetadata.zsh; sourceTree = "<group>"; };
 		3A402E132C73DC4F000DE1BC /* PayloadMetadata.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PayloadMetadata.plist; sourceTree = "<group>"; };
@@ -244,14 +274,16 @@
 			isa = PBXGroup;
 			children = (
 				3ABBF9672C3360FF00490E62 /* License.html */,
+				3A8B63712D46EFA50018EE09 /* Licence Helpers */,
+				3A8B63702D46EF660018EE09 /* Item Views */,
+				3A8B636F2D46EF290018EE09 /* Views */,
+				3A8B636E2D46EEF90018EE09 /* Models */,
+				3A8B63722D46F01B0018EE09 /* XPC */,
 				3A7471932C1A3D6F00E559FA /* macInstallerApp.swift */,
 				3A7471952C1A3D6F00E559FA /* ContentView.swift */,
-				3AD257B12C3AFF8E00AD6254 /* XPCClient.swift */,
-				3AD257B32C3AFF9E00AD6254 /* Util.swift */,
 				3A7471972C1A3D7000E559FA /* Assets.xcassets */,
 				3A7471992C1A3D7000E559FA /* Preview Content */,
 				3AF451D92C1E62E3003034C7 /* Localizable.xcstrings */,
-				3ABBF96B2C3364BD00490E62 /* HTMLView.swift */,
 				3AD257B52C3B024E00AD6254 /* Info.plist */,
 			);
 			path = macInstaller;
@@ -298,6 +330,59 @@
 				3A7EA83D2C8BA1D40092530D /* com.greenkitty.product.plist */,
 			);
 			path = User;
+			sourceTree = "<group>";
+		};
+		3A8B636E2D46EEF90018EE09 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				3A2F7E992D4318CC00F95728 /* InstallerState.swift */,
+				3A2F7E892D43160D00F95728 /* InstallerStep.swift */,
+				3A2F7E8D2D43169F00F95728 /* InstallerTask.swift */,
+				3A2F7E912D43170700F95728 /* InstallScope.swift */,
+				3A2F7E952D43181000F95728 /* InstallSummary.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		3A8B636F2D46EF290018EE09 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				3A2F7E9D2D43196000F95728 /* IntroductionView.swift */,
+				3A2F7E9F2D431BB800F95728 /* LicenseView.swift */,
+				3A2F7EA12D431E7600F95728 /* ScopeSelectionView.swift */,
+				3A2F7EA32D431EFB00F95728 /* ScopeDescriptionView.swift */,
+				3A2F7EA52D431F4A00F95728 /* InstallationView.swift */,
+				3A2F7EA72D431F6B00F95728 /* SummaryView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		3A8B63702D46EF660018EE09 /* Item Views */ = {
+			isa = PBXGroup;
+			children = (
+				3A2F7E8B2D43164200F95728 /* InstallerStepView.swift */,
+				3A2F7E932D43171A00F95728 /* InstallScopeView.swift */,
+				3A2F7E8F2D4316D000F95728 /* InstallerTaskView.swift */,
+			);
+			path = "Item Views";
+			sourceTree = "<group>";
+		};
+		3A8B63712D46EFA50018EE09 /* Licence Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				3ABBF96B2C3364BD00490E62 /* HTMLView.swift */,
+				3A2F7E9B2D4318F500F95728 /* License.swift */,
+			);
+			path = "Licence Helpers";
+			sourceTree = "<group>";
+		};
+		3A8B63722D46F01B0018EE09 /* XPC */ = {
+			isa = PBXGroup;
+			children = (
+				3AD257B32C3AFF9E00AD6254 /* Util.swift */,
+				3AD257B12C3AFF8E00AD6254 /* XPCClient.swift */,
+			);
+			path = XPC;
 			sourceTree = "<group>";
 		};
 		3AD257942C3AF69400AD6254 /* HELPERNAME */ = {
@@ -481,13 +566,28 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A2F7E8C2D43164D00F95728 /* InstallerStepView.swift in Sources */,
+				3A2F7E8A2D43161400F95728 /* InstallerStep.swift in Sources */,
+				3A2F7E902D4316D000F95728 /* InstallerTaskView.swift in Sources */,
 				3AD257B22C3AFF8E00AD6254 /* XPCClient.swift in Sources */,
+				3A2F7E962D43181B00F95728 /* InstallSummary.swift in Sources */,
+				3A2F7E8E2D43169F00F95728 /* InstallerTask.swift in Sources */,
+				3A2F7EA62D431F5100F95728 /* InstallationView.swift in Sources */,
 				3AD257AC2C3AFDE300AD6254 /* Protocols.swift in Sources */,
+				3A2F7EA82D431F7200F95728 /* SummaryView.swift in Sources */,
 				3ABBF96C2C3364BD00490E62 /* HTMLView.swift in Sources */,
+				3A2F7E9C2D4318F500F95728 /* License.swift in Sources */,
 				3A7471962C1A3D6F00E559FA /* ContentView.swift in Sources */,
 				3AD257B42C3AFF9E00AD6254 /* Util.swift in Sources */,
+				3A2F7E9E2D43196100F95728 /* IntroductionView.swift in Sources */,
+				3A2F7E942D43171A00F95728 /* InstallScopeView.swift in Sources */,
 				3A7471942C1A3D6F00E559FA /* macInstallerApp.swift in Sources */,
 				3AD257A92C3AFDC800AD6254 /* Constants.swift in Sources */,
+				3A2F7E9A2D4318CC00F95728 /* InstallerState.swift in Sources */,
+				3A2F7EA02D431BB800F95728 /* LicenseView.swift in Sources */,
+				3A2F7EA42D431F0900F95728 /* ScopeDescriptionView.swift in Sources */,
+				3A2F7EA22D431E8500F95728 /* ScopeSelectionView.swift in Sources */,
+				3A2F7E922D43170700F95728 /* InstallScope.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

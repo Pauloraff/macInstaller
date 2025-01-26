@@ -35,8 +35,15 @@
         }
       }
     },
-    "All users" : {
-
+    "ALL_USERS" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All Users"
+          }
+        }
+      }
     },
     "ALL_USERS_CAN_USE" : {
       "localizations" : {
@@ -254,8 +261,15 @@
         }
       }
     },
-    "Only the logged-in user" : {
-
+    "LOGGED_IN_USERS" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Current user only"
+          }
+        }
+      }
     },
     "PERMISSIONS_DECLINED" : {
       "localizations" : {

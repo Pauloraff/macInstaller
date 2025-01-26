@@ -11,8 +11,6 @@ import WebKit
 struct LicenseHTMLView: NSViewRepresentable {
     typealias NSViewType = WKWebView
  
-    // 4
-    // Access the `homepage.html` file that is stored in the app bundle
     var fileURL: URL {
         guard let url = Bundle.main.url(forResource: "License", withExtension: "html") else {
             fatalError("path does not exist")
