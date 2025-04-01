@@ -130,6 +130,17 @@ folder in the installer's payload, copy the app to the Payload/ directory.
 (Work in progress) The .app folder can also be archived and the installer will unarchive it during installation.
 This is to reduce the size of the final installer.
 
+# Customizing the installer with additional steps
+
+(Work in progress) Developers who use this project as a basis for their own installers may want to
+add additional steps to the installer flow. For instance, the end-user might need to be prompted for
+credentials which would need to be submitted to an API endpoint.
+
+In order to support this, there needs to be some way to enhance the project with custom panes and code specific to
+those panes. This doesn't appear to be possible yet with SwiftUI in a way that's as convenient as I'd like.
+Work is underway to see if replacing SwiftUI with another approach has the potential to make customization easier.
+
+
 # Implementation
 
 The installer uses a system 'helper' daemon at run time to perform actions which
