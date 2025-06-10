@@ -12,7 +12,7 @@ class XPCServer: NSObject {
         listener?.resume()
     }
     
-    private func connetionInterruptionHandler() {
+    private func connectionInterruptionHandler() {
         NSLog("\(#function)")
     }
     
@@ -74,7 +74,7 @@ extension XPCServer: NSXPCListenerDelegate {
         
         newConnection.remoteObjectInterface = NSXPCInterface(with: InstallationClient.self)
         
-        newConnection.interruptionHandler = connetionInterruptionHandler
+        newConnection.interruptionHandler = connectionInterruptionHandler
         newConnection.invalidationHandler = connectionInvalidationHandler
         
         newConnection.resume()

@@ -13,7 +13,7 @@ class XPCClient {
         connection?.remoteObjectInterface = NSXPCInterface(with: Installer.self)
         
         connection?.invalidationHandler = connectionInvalidationHandler
-        connection?.interruptionHandler = connetionInterruptionHandler
+        connection?.interruptionHandler = connectionInterruptionHandler
         
         connection?.resume()
 
@@ -22,7 +22,7 @@ class XPCClient {
         installer?.install()
     }
     
-    private func connetionInterruptionHandler() {
+    private func connectionInterruptionHandler() {
         NSLog("[XPCTEST] \(type(of: self)): connection has been interrupted XPCTEST")
     }
     
