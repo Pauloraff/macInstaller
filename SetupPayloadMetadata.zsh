@@ -29,7 +29,7 @@ ALLUSER_SERVICE_PLIST_DEST_DIR='/Library/LaunchDaemons/'
 ALLUSER_SERVICE_DEST_DIR='/Library/PrivilegedHelperTools/'
 ALLUSER_SERVICE_FULL_PATH="$ALLUSER_SERVICE_DEST_DIR/$SOURCE_ALLUSER_SERVICE"
 
-#### user service: Payload/User/com.greenkitty.product.plist -> /Library/LaunchDaemons
+#### user service: Payload/User/com.greenkitty.product.plist -> /Library/LaunchAgents
 SOURCE_USER_SERVICE='com.greenkitty.product'
 USER_SERVICE_EXEC="$SOURCE_USER_SERVICE"
 USER_SERVICE_PLIST="$SOURCE_USER_SERVICE.plist"
