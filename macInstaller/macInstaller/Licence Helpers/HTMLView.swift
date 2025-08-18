@@ -20,6 +20,8 @@ struct LicenseHTMLView: NSViewRepresentable {
  
     func makeNSView(context: Context) -> WKWebView {
         let config = WKWebViewConfiguration()
+        config.defaultWebpagePreferences.allowsContentJavaScript = false
+        
         let webView = WKWebView(frame: .zero, configuration: config)
 
         webView.allowsBackForwardNavigationGestures = false
