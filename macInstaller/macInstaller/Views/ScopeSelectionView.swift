@@ -12,7 +12,11 @@ struct ScopeSelectionView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text("HOW_TO_INSTALL").padding(.leading, 10.0).padding(.trailing, 10.0).padding(.top, 20.0).padding(.bottom, 20.0)
+            Text("HOW_TO_INSTALL").foregroundColor(Color(.labelColor))
+                .padding(.leading, 10.0)
+                .padding(.trailing, 10.0)
+                .padding(.top, 20.0)
+                .padding(.bottom, 20.0)
             Divider()
 
             List(model.choices, id: \.self, selection: $model.selectedChoice) { item in
@@ -27,15 +31,15 @@ struct ScopeSelectionView: View {
             
             // Installing this software requires XXX of disk space"
             let installSize: Int64 = model.scopeSizes[model.selectedChoice] ?? 0
-            Text("INSTALL_SIZE \(installSize)")
+            Text("INSTALL_SIZE \(installSize)").foregroundColor(Color(.labelColor))
             Text("")
             switch model.selectedChoice {
                 case .allUsers:
-                    Text("INSTALL_FOR_ALL_USERS")
+                    Text("INSTALL_FOR_ALL_USERS").foregroundColor(Color(.labelColor))
                     // "You have chosen to install this software for all users of this computer"
                     Text("")
                 case .user:
-                    Text("INSTALL_FOR_CURRENT_USER")
+                    Text("INSTALL_FOR_CURRENT_USER").foregroundColor(Color(.labelColor))
                     //"You have chosen to install this software in your home folder")
                     // "Only the current user will be able to use this software"
                     Text("")
@@ -43,6 +47,6 @@ struct ScopeSelectionView: View {
         }.frame(maxWidth: 500.0)
             .padding(.leading, 10.0)
             .border(Color.gray, width: /*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/)
-            .background(Color.white)
+            .background()
     }
 }

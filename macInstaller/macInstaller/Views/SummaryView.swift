@@ -13,21 +13,21 @@ struct SummaryView: View {
     var body: some View {
         VStack(alignment: .leading) {
             if (model.successful) {
-                Text("SUMMARY_SUCCESS")
+                Text("SUMMARY_SUCCESS").foregroundColor(Color(.labelColor))
             } else if (!model.permissionsGranted) {
-                Text("PERMISSIONS_DECLINED")
+                Text("PERMISSIONS_DECLINED").foregroundColor(Color(.labelColor))
             } else if (!model.licenseAccepted) {
-                Text("LICENSE_DECLINED")
+                Text("LICENSE_DECLINED").foregroundColor(Color(.labelColor))
             } else if (model.freshInstall) {
-                Text("INSTALL_FAILED")
+                Text("INSTALL_FAILED").foregroundColor(Color(.labelColor))
             } else {
-                Text("INSTALL_ROLLBACK")
+                Text("INSTALL_ROLLBACK").foregroundColor(Color(.labelColor))
             }
             Spacer()
         }.frame(maxWidth: 500.0)
             .padding(.leading, 10.0)
             .border(Color.gray, width: /*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/)
-            .background(Color.white)
+            .background()
     }
 }
 
