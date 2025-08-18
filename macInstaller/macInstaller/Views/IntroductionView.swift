@@ -12,11 +12,12 @@ struct IntroductionView: View {
             Text("BRIEF_OVERVIEW")
                 .frame(maxWidth: .infinity, alignment: .leading)
             Text("")
-            Text("DESCRIPTION")
+            Text("DESCRIPTION").foregroundColor(Color(.labelColor))
             Spacer()
-        }.frame(maxWidth: 500.0)
+        }
+           .frame(maxWidth: 500.0)
             .padding(.leading, 10.0)
             .border(Color.gray, width: /*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/)
-            .background(Color.white)
+            .background()
     }
 }

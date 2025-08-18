@@ -22,11 +22,11 @@ struct InstallScopeView: View {
                 case .allUsers:
                     Image(systemName: "desktopcomputer").resizable()
                         .frame(width: 32.0, height: 32.0)
-                    Text("ALL_USERS").foregroundStyle(model.selectedChoice == choice ? .white : .black)
+                    Text("ALL_USERS").foregroundColor(Color(.labelColor))
                 case .user:
                     Image(systemName: "person")
                         .resizable().frame(width: 32.0, height: 32.0)
-                    Text("LOGGED_IN_USERS").foregroundStyle(model.selectedChoice == choice ? .white : .black)
+                    Text("LOGGED_IN_USERS").foregroundColor(Color(.labelColor))
             }
             Spacer()
         }

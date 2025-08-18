@@ -46,7 +46,6 @@ struct InstallerTaskView: View {
                     Text(LocalizedStringKey(InstallerTaskNames[stateModel.task.rawValue])).foregroundStyle(.red)
                     Spacer()
             }
-                
         }
     }
 }

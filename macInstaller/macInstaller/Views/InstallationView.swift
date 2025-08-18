@@ -24,7 +24,7 @@ struct InstallationView: View {
         }.frame(maxWidth: 500.0)
             .padding(.leading, 10.0)
             .border(Color.gray, width: /*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/)
-            .background(Color.white)
+            .background()
             .onAppear(perform: {
                 // run the next task
                 runNextAvailableTask()
